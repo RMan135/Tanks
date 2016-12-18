@@ -13,6 +13,10 @@ SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
 SDL_Surface* gHelloWorld = NULL;
 
+bool quit = false;
+
+SDL_Event e;
+
 int main(int argc, char* args[])
 {
 	if (!init())
@@ -27,12 +31,20 @@ int main(int argc, char* args[])
 		}
 		else
 		{
-			SDL_BlitSurface(gHelloWorld, NULL, gScreenSurface, NULL);
-			SDL_UpdateWindowSurface(gWindow);
+			while (!quit)
+			{
+				while (SDL_PollEvent(&e) != 0)
+				{
+					if (e.type == SDL_QUIT)
+					{
+						quit = true;
+					}
+				}
+				SDL_BlitSurface(gHelloWorld, NULL, gScreenSurface, NULL);
+				SDL_UpdateWindowSurface(gWindow);
+			}
 		}
 	}
-
-	SDL_Delay(2000);
 	close();
 	return 0;
 }
