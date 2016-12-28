@@ -5,6 +5,8 @@
 #ifndef OBJECT_HEADER
 #define OBJECT_HEADER
 
+#include "collision.h"
+
 struct object{ // orice obiect nu e tank
 	collisionBox* colBox;
 	bool solid;

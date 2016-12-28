@@ -6,7 +6,6 @@
 #define COLLISIONBOX_HEADER
 
 #include "object.h"
-#include "collision.h"
 
 union collisionType = {square, circle};
 

@@ -6,6 +6,7 @@
 #define TANK_HEADER
 
 #include <vector>
+#include "collision.h"
 
 union powerup = {speed, godmode}; // doar un sketch
 union lor = {left, right}; // directie?
