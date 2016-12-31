@@ -1,31 +1,47 @@
 /*
-	Self-explanatory.
+	tanki
 */
 
 #ifndef TANK_HEADER
 #define TANK_HEADER
 
-#include <vector>
-#include "collision.h"
+#define POWERUP_NUMBER 3 
+#define MAX_TANK_NUMBER 4
 
-union powerup = {speed, godmode}; // doar un sketch
-union lor = {left, right}; // directie?
+struct collisionBox;
+
+enum powerupCode {ghost, speed, godmode}; // doar un sketch
+enum lor {left = 1, right = -1}; // left or right
+enum fob {forward = 1, backward = -1}; // forward or backward
+enum projectileType {light, normal, heavy, explosive};
+
+struct powerup{
+	powerupCode power;
+	unsigned long long expirationDate;
+};
 
 struct tank{
 	collisionBox* colBox;
-	unsigned int health;
-	unsigned int speed, handling; // handlingu' e cat de usor se poate intoarce
-	vector<powerup> powerUps;
-	unsigned int rotation;
+	unsigned int team;
+	powerup* powerups;
+	projectileType ammoType;
+	unsigned int health, damageMod;
+	unsigned int speed;
+	unsigned int x, y; // centrul, in pixeli
+	unsigned int incX100, multX, bufferX;
+	unsigned int rotation, turretRotation;
 };
 
-tank* createTank();
-void destroyTank();
+tank* tankVector[MAX_TANK_NUMBER];
 
-bool move(tank* tank1); // returneaza 0 daca nu poate
+tank* createTank(unsigned int team, unsigned int tileX, unsigned int tileY);
+void destroyTank(tank* tank);
+
+bool accelerate(tank* tank1, fob sense); // returneaza 0 daca nu poate
 bool turn(tank* tank1, lor direction);
 void shoot(tank* tank1);
+void aim(tank* tank1, unsigned int x, unsigned int y);
 void act(tank* tank1); // AIu'; functia apelata in fiecare frame, pentru
-		// fiecare tank
+					// fiecare tank
 
 #endif

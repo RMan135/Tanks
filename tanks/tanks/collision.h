@@ -5,24 +5,19 @@
 #ifndef COLLISIONBOX_HEADER
 #define COLLISIONBOX_HEADER
 
-#include "object.h"
-
-union collisionType = {square, circle};
+struct tank;
+enum collisionType {square, circle};
 
 struct collisionBox{
 	collisionType type; 
-	unsigned int x, y; // coltu' stanga sus
+	unsigned int x, y; // centrul, in pixeli
+	unsigned int radius; // ignorat daca type == square
 };
 
-collisionBox* createCollisionBox();
-void destroyCollisionBox();
+collisionBox* createCollisionBox(collisionType initType, unsigned int initX, unsigned int initY, unsigned int initRadius);
+void destroyCollisionBox(collisionBox* box);
 
-
-// one day... I will learn templates... one day
-
-bool checkCollision(object* object1, object* object2);
-bool checkCollision(object* object1, tank* tank2);
-bool checkCollision(tank* tank1, object* object2);
-bool checkCollision(tank* tank1, tank* tank2);
+bool checkCollision(collisionBox* box1, collisionBox* box2);
+bool checkEnvCollision(collisionBox* box1); // coliziune cu imprejurarile (nu cu alt tanc)
 
 #endif
