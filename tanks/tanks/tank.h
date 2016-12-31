@@ -34,7 +34,7 @@ struct tank{
 	unsigned int rotation, turretRotation;
 };
 
-tank* tankVector[MAX_TANK_NUMBER];
+extern tank* tankVector[MAX_TANK_NUMBER];
 
 tank* createTank(unsigned int team, unsigned int tileX, unsigned int tileY);
 void destroyTank(tank* tank);

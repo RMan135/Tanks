@@ -5,7 +5,11 @@
 #ifndef COORD_HEADER
 #define COORD_HEADER
 
-union coordinate {double doubleVal, long long longVal};
+union coordinate {
+	double doubleVal;
+	long long longVal;
+};
+
 enum coordType {coordType_double, coordType_long};
 
 struct position{

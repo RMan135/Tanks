@@ -1,1 +1,3 @@
-#include "tank.cpp"
+#include "tank.h"
+
+tank* tankVector[MAX_TANK_NUMBER];

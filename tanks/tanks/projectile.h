@@ -6,6 +6,7 @@
 #define PROJECTILE_HEADER
 
 #include "projectilelist.h"
+#include "coord.h"
 
 struct tank;
 struct collisionBox;
@@ -20,7 +21,7 @@ struct projectile{
 	int rotation;
 };
 
-projectileList projectilesShot;
+extern projectileList projectilesShot;
 
 projectile* createProjectile(tank* shooter);
 void destroyProjectile(projectile* proj);
