@@ -14,10 +14,10 @@ struct projectile{
 	collisionBox *colBox;
 	tank* owner;
 	int damage;
-	unsigned int x, y; // centrul, in pixeli
-	unsigned int incX100, multX, bufferX; // determina miscarea proiectilului
-	int speed; // folosita la calcularea miscarii
-	unsigned int rotation;
+	position x, y; // centrul, in pixeli
+	double incX100, multX; // determina miscarea proiectilului
+	double speed; // folosita la calcularea miscarii
+	int rotation;
 };
 
 projectileList projectilesShot;

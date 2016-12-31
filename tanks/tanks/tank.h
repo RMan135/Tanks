@@ -8,6 +8,8 @@
 #define POWERUP_NUMBER 3 
 #define MAX_TANK_NUMBER 4
 
+#include "coord.h"
+
 struct collisionBox;
 
 enum powerupCode {ghost, speed, godmode}; // doar un sketch
@@ -26,9 +28,9 @@ struct tank{
 	powerup* powerups;
 	projectileType ammoType;
 	unsigned int health, damageMod;
-	unsigned int speed;
-	unsigned int x, y; // centrul, in pixeli
-	unsigned int incX100, multX, bufferX;
+	double speed;
+	position x, y;
+	double incX100, multX;
 	unsigned int rotation, turretRotation;
 };
 

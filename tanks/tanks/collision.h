@@ -5,12 +5,14 @@
 #ifndef COLLISIONBOX_HEADER
 #define COLLISIONBOX_HEADER
 
+#include "coord.h"
+
 struct tank;
 enum collisionType {square, circle};
 
 struct collisionBox{
 	collisionType type; 
-	unsigned int x, y; // centrul, in pixeli
+	position x, y;
 	unsigned int radius; // ignorat daca type == square
 };
 
