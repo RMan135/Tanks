@@ -6,18 +6,36 @@
 
 struct matrix
 {
-    bool tiles[MAX_TILES_WIDTH][MAX_TILES_HEIGHT];
+    char tiles[MAX_TILES_WIDTH][MAX_TILES_HEIGHT];
     short width, height;
 };
 
-matrix collision_map;
+matrix collisionMap;
+matrix accessibleTiles;
+short theme;
+
+/*
+0 - empty
+1 - wall
+2 - accessible
+3 - spawn point nearby
+*/
+
+/// mutati randurile 25-32 unde credeti ca e mai bine
+
+struct coordinates
+{
+    double x, y;
+};
+
+coordinates playerSpawners[4];
+coordinates powerupSpawners[4];
 
 #include "terrainGeneration.h"
 
 void selectMap()
 {
-    generateRandomMatrix(collision_map, 7);
-    smoothenMatrix(collision_map, 3, 1, 1);
+    generateMap();
 }
 
 #endif
