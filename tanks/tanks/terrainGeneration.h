@@ -166,7 +166,6 @@ void generateMap()
     short pr;
     srand (time(NULL));
     pr = rand() % 4;
-    pr = 2;
     theme = pr;
 
     while ( !generateMapAndConfirm( presets[pr][0], presets[pr][1], presets[pr][2], presets[pr][3], 4) );
