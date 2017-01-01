@@ -82,24 +82,26 @@ void smoothenMatrix (matrix &playingField, short emptyLimit, short occupiedLimit
 
 void DFS(matrix &mat, short x, short y)
 {
-    mat.tiles[x][y] = 2;
-
-    if ( !( (mat.tiles[x+1][y+1] == 1 && mat.tiles[x-1][y-1] == 1) ||
-            (mat.tiles[x+1][y-1] == 1 && mat.tiles[x-1][y+1] == 1)    ) )
+    if (mat.tiles[x][y] == 0)
     {
-        short cx1[] = {0, 1,  0, -1}, cy1[] = {1,  0, -1, 0},
-              cx2[] = {1, 1, -1, -1}, cy2[] = {1, -1, -1, 1},
-              cx3[] = {1, 0, -1,  0}, cy3[] = {0, -1,  0, 1};
+        mat.tiles[x][y] = 2;
 
-        for (short k = 0; k < 4; ++k)
-            if ( !mat.tiles[ x+cx1[k] ][ y+cy1[k] ]      &&
-                  mat.tiles[ x+cx2[k] ][ y+cy2[k] ] != 1 &&
-                  mat.tiles[ x+cx3[k] ][ y+cy3[k] ] != 1    )
-            {
-                DFS(mat, x+cx1[k], y+cy1[k]);
-                DFS(mat, x+cx2[k], y+cy2[k]);
-                DFS(mat, x+cx3[k], y+cy3[k]);
-            }
+        if ( !( (mat.tiles[x+1][y+1] == 1 && mat.tiles[x-1][y-1] == 1) ||
+                (mat.tiles[x+1][y-1] == 1 && mat.tiles[x-1][y+1] == 1)    ) )
+        {
+            short cx1[] = {0, 1,  0, -1}, cy1[] = {1,  0, -1, 0},
+                  cx2[] = {1, 1, -1, -1}, cy2[] = {1, -1, -1, 1},
+                  cx3[] = {1, 0, -1,  0}, cy3[] = {0, -1,  0, 1};
+
+            for (short k = 0; k < 4; ++k)
+                if ( !mat.tiles[ x+cx1[k] ][ y+cy1[k] ]      &&
+                      mat.tiles[ x+cx2[k] ][ y+cy2[k] ] != 1 &&
+                      mat.tiles[ x+cx3[k] ][ y+cy3[k] ] != 1    )
+                   {
+                      DFS(mat, x+cx1[k], y+cy1[k]);
+                      DFS(mat, x+cx2[k], y+cy2[k]);
+                   }
+    }
     }
 }
 
@@ -163,12 +165,13 @@ void generateMap()
                            {30, 3, 4, 2},  //cave
                            {7 , 3, 1, 1},  //ruins
                            {3 , 0, 0, 0}}; //desert
+
     short pr;
     srand (time(NULL));
     pr = rand() % 4;
-    theme = pr;
+    mapTheme = pr;
 
-    while ( !generateMapAndConfirm( presets[pr][0], presets[pr][1], presets[pr][2], presets[pr][3], 4) );
+    while ( !generateMapAndConfirm( presets[pr][0], presets[pr][1], presets[pr][2], presets[pr][3], noOfPlayers) );
 }
 
 #endif
