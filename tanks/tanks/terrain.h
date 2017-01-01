@@ -69,7 +69,7 @@ void selectMap(short choice)
             case 0 : { fin.open ("maps/forest1.dat");  break; }
             case 1 : { fin.open ("maps/cave1.dat");    break; }
             case 2 : { fin.open ("maps/ruins1.dat");   break; }
-            case 3 : { fin.open ("maps/forest1.dat");  break; }
+            case 3 : { fin.open ("maps/desert1.dat");  break; }
         }
 
         getMap();
