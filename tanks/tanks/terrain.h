@@ -10,7 +10,7 @@ ifstream fin;
 
 struct matrix
 {
-    char tiles[MAX_TILES_WIDTH][MAX_TILES_HEIGHT];
+    short tiles[MAX_TILES_WIDTH][MAX_TILES_HEIGHT];
     short width, height;
 };
 
