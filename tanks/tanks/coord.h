@@ -5,7 +5,7 @@
 #ifndef COORD_HEADER
 #define COORD_HEADER
 
-union coordinate {
+union coordinate{
 	double doubleVal;
 	long long longVal;
 };
