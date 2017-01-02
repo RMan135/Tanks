@@ -9,6 +9,7 @@
 #define MAX_TANK_NUMBER 4
 
 #include "coord.h"
+#include "collision.h"
 
 struct collisionBox;
 

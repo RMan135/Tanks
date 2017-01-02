@@ -7,21 +7,26 @@
 #ifndef PROJECTILELIST_HEADER
 #define PROJECTILELIST_HEADER
 
-struct projectile;
+#include "projectile.h"
 
 struct projectileNode{
 	projectile* payload;
-	projectileNode* next;
+	projectileNode *next, *prev;
 };
 
 struct projectileList{
 	projectileNode* first;
 };
 
+extern projectileList projectilesShot;
+
+void destroyProjectileNode(projectileNode* projNode);
+
 void initProjectileList(projectileList& list);
 void destroyList(projectileList& list);
 
-void addProjNode(projectile* addedProjectile);
-void delProjNode(projectile* addedProjectile);
+void addProjNode(projectileNode*& lastNode, projectile* proj);
+void addProjNode(projectileList& list, projectile* proj);
+void delProjNode(projectileNode*& projNode);
 
 #endif

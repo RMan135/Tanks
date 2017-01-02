@@ -1,3 +1,7 @@
 #include "projectile.h"
 
-projectileList projectilesShot;
+void destroyProjectile(projectile* proj){
+	//coliziunea nu e implementata inca
+	//destroyCollisionBox(proj->colBox);
+	delete proj;
+}

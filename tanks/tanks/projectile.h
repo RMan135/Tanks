@@ -5,11 +5,10 @@
 #ifndef PROJECTILE_HEADER 
 #define PROJECTILE_HEADER
 
-#include "projectilelist.h"
 #include "coord.h"
+#include "collision.h"
 
 struct tank;
-struct collisionBox;
 
 struct projectile{
 	collisionBox *colBox;
@@ -21,11 +20,9 @@ struct projectile{
 	int rotation;
 };
 
-extern projectileList projectilesShot;
-
 projectile* createProjectile(tank* shooter);
 void destroyProjectile(projectile* proj);
 
-void exist(projectile* proj); // proiectilu' face ce stie mai bine
+bool exist(projectile* proj); // proiectilu' face ce stie mai bine
 
 #endif
