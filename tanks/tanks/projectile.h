@@ -17,7 +17,7 @@ struct projectile{
 	coords pos, dim;
 	double incX100, multX; // determina miscarea proiectilului
 	double speed; // folosita la calcularea miscarii
-	int rotation;
+	double rotation;
 };
 
 projectile* createProjectile(tank* shooter);

@@ -6,26 +6,22 @@
 collisionBox* createCollisionBox(tank* owner){
 	collisionBox* box = new collisionBox;
 	box->type = square;
-	box->pos.x.doubleVal = owner->pos.x.doubleVal;
-	box->pos.y.doubleVal = owner->pos.y.doubleVal;
-	box->radius = TANK_SIZE;
+	box->pos = &owner->pos;
+	box->radius = owner->dim.x.doubleVal;
 	box->dim.x.doubleVal = owner->dim.x.doubleVal;
 	box->dim.y.doubleVal = owner->dim.y.doubleVal;
-	box->pos.type = coordType_double;
-	box->rotation = owner->rotation;
+	box->rotation = &owner->rotation;
 	return box;
 }
 
 collisionBox* createCollisionBox(projectile* owner){
 	collisionBox* box = new collisionBox;
 	box->type = square;
-	box->pos.x.doubleVal = owner->pos.x.doubleVal;
-	box->pos.y.doubleVal = owner->pos.y.doubleVal;
-	box->radius = TANK_SIZE;
+	box->pos = &owner->pos;
+	box->radius = owner->dim.x.doubleVal;
 	box->dim.x.doubleVal = owner->dim.x.doubleVal;
 	box->dim.y.doubleVal = owner->dim.y.doubleVal;
-	box->pos.type = coordType_double;
-	box->rotation = owner->rotation;
+	box->rotation = &owner->rotation;
 	return box;
 }
 

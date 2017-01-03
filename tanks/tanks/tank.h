@@ -8,9 +8,9 @@
 #define POWERUP_NUMBER 3 
 #define MAX_TANK_NUMBER 4
 
-#define TANK_WIDTH 32
-#define TANK_HEIGHT 32
+#define TANK_SIZE 32
 #define TANK_DIAG 45.2548339958
+#define TANK_DIAGD2 22.6274169979
 
 #include "coord.h"
 #include "collision.h"

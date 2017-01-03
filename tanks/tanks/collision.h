@@ -13,9 +13,9 @@ enum collisionType {square, circle};
 
 struct collisionBox{
 	collisionType type; 
-	coords pos, dim;
+	coords *pos, dim;
 	double radius; // ignorat daca type == square
-	double rotation;
+	double *rotation;
 };
 
 collisionBox* createCollisionBox(tank* owner);
