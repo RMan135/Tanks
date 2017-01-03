@@ -5,6 +5,8 @@
 #define MAX_TILES_HEIGHT 24
 #define NUMBER_OF_PRESET_MAPS 4
 
+using namespace std;
+
 #include <fstream>
 ifstream fin;
 
