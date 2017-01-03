@@ -20,8 +20,6 @@ struct collisionBox{
 
 collisionBox* createCollisionBox(tank* owner);
 collisionBox* createCollisionBox(projectile* owner);
-collisionBox* createCollisionBox(double initX, double initY, double initRotation);
-collisionBox* createCollisionBox(double initRadius, double initRotation);
 void destroyCollisionBox(collisionBox* box);
 
 bool checkCollision(collisionBox* box1, collisionBox* box2);
