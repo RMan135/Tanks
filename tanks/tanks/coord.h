@@ -5,19 +5,19 @@
 #ifndef COORD_HEADER
 #define COORD_HEADER
 
-union coordinate{
+union doublong{
 	double doubleVal;
 	long long longVal;
 };
 
 enum coordType {coordType_double, coordType_long};
 
-struct position{
-	coordinate x, y;
+struct coords{
+	doublong x, y;
 	coordType type;
 };
 
-void coordToDouble(position& pos); // converteste coordonatele la double
-void coordToLong(position& pos); // converteste coordonatele la long
+void coordToDouble(coords& pos); // converteste coordonatele la double
+void coordToLong(coords& pos); // converteste coordonatele la long
 
 #endif

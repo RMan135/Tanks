@@ -14,7 +14,7 @@ struct projectile{
 	collisionBox *colBox;
 	tank* owner;
 	int damage;
-	position x, y; // centrul, in pixeli
+	coords pos, dim;
 	double incX100, multX; // determina miscarea proiectilului
 	double speed; // folosita la calcularea miscarii
 	int rotation;

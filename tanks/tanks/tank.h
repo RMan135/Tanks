@@ -8,6 +8,10 @@
 #define POWERUP_NUMBER 3 
 #define MAX_TANK_NUMBER 4
 
+#define TANK_WIDTH 32
+#define TANK_HEIGHT 32
+#define TANK_DIAG 45.2548339958
+
 #include "coord.h"
 #include "collision.h"
 
@@ -30,20 +34,20 @@ struct tank{
 	projectileType ammoType;
 	unsigned int health, damageMod;
 	double speed;
-	position x, y;
+	coords pos, dim;
 	double incX100, multX;
-	unsigned int rotation, turretRotation;
+	double rotation, turretRotation;
 };
 
 extern tank* tankVector[MAX_TANK_NUMBER];
 
-tank* createTank(unsigned int team, unsigned int tileX, unsigned int tileY);
+tank* createTank(unsigned int team, double initX, double initY);
 void destroyTank(tank* tank);
 
 bool accelerate(tank* tank1, fob sense); // returneaza 0 daca nu poate
 bool turn(tank* tank1, lor direction);
 void shoot(tank* tank1);
-void aim(tank* tank1, unsigned int x, unsigned int y);
+void aim(tank* tank1, double x, double y);
 void act(tank* tank1); // AIu'; functia apelata in fiecare frame, pentru
 					// fiecare tank
 
