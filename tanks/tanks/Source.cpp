@@ -1,14 +1,15 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
+#include <cstring>
 #include "Texture.h"
+#include "terrain.h"
+#include "terrainGeneration.h"
 using namespace std;
 
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 650
+#define SCREEN_WIDTH 768
+#define SCREEN_HEIGHT 576
 #define FPS 60
-
-
 
 int main(int argc, char* args[])
 {
@@ -34,9 +35,13 @@ int main(int argc, char* args[])
 
 	///// TESTING GROUNDS /////
 	
-	Texture t;
-	t.setRenderTarget(RENDER_TARGET);
-	t.loadTexture("media/block.png");
+	Texture wall, ground;
+	wall.setRenderTarget(RENDER_TARGET);
+	wall.loadTexture("media/block.png");
+	ground.setRenderTarget(RENDER_TARGET);
+	ground.loadTexture("media/sand.png");
+	selectMap(4);
+	
 
 	///////////////////////////
 	bool running = true;
@@ -47,7 +52,7 @@ int main(int argc, char* args[])
 		// Get current tick (for fps cap)
 		startingTick = SDL_GetTicks();
 
-		// Make screen black
+		// Clear screen
 		SDL_SetRenderDrawColor(RENDER_TARGET, 0, 0, 0, 0);
 		SDL_RenderClear(RENDER_TARGET);
 
@@ -60,10 +65,20 @@ int main(int argc, char* args[])
 				break;
 			}
 
+			/////////
+			if (event.type == SDL_KEYDOWN)
+				if (event.key.keysym.sym == SDLK_SPACE)
+					selectMap(4);
+			/////////
 		}
 		//// TESTING GROUNDS ////
 
-		t.simpleRender(150, 300);
+		for (int i = 0; i <= collisionMap.width+1; i++)
+			for (int j = 0; j <= collisionMap.height+1; j++)
+				if (collisionMap.tiles[i][j] == 1)
+					wall.simpleRender(i * 24, j * 24);
+				else
+					ground.simpleRender(i * 24, j * 24);
 
 		/////////////////////////
 
