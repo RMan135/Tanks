@@ -1,5 +1,5 @@
-﻿  Texture.cpp
-f:\~workspace\tanks\tanks\tanks\texture.cpp(32): warning C4838: conversion from 'double' to 'int' requires a narrowing conversion
-f:\~workspace\tanks\tanks\tanks\texture.cpp(32): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+﻿  Source.cpp
+f:\~workspace\tanks\tanks\tanks\terraingeneration.h(32): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+f:\~workspace\tanks\tanks\tanks\terraingeneration.h(170): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   tanks.vcxproj -> F:\~WORKSPACE\tanks\tanks\Debug\tanks.exe
   tanks.vcxproj -> F:\~WORKSPACE\tanks\tanks\Debug\tanks.pdb (Partial PDB)
