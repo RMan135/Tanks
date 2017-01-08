@@ -25,31 +25,41 @@ void destroyCollisionBox(collisionBox* box){
 template <class type1, class type2>
 bool checkCollision(type1* obj1, type2* obj2){
 	// broad-phase
-	double difX = obj1->pos.x.doubleVal - obj2->pos.x.doubleVal;
-	double difY = obj1->pos.y.doubleVal - obj2->pos.y.doubleVal;
-	if(difX > 3 && difY > 3)
-		return 0;
+	{
+		double difX = obj1->pos.x.doubleVal - obj2->pos.x.doubleVal;
+		double difY = obj1->pos.y.doubleVal - obj2->pos.y.doubleVal;
+		if(difX > obj1->diagonal + obj2->diagonal && difY > obj1->diagonal + obj2->diagonal)
+			return 0;
+	}
 	// celalalt phase
+	{
+		unsigned int rot1 = obj1->rotation % 90;
+		unsigned int rot2 = obj2->rotation % 90;
+		// work in progress
+	}
 	return 1;
 }
 
 template <class type>
 bool checkEnvCollision(type* obj){ // coliziune cu imprejurarile (nu cu alt tanc)
-	double vertex1x = obj->pos.x.doubleVal + sin(((obj->rotation + 315) % 360) * RADIAN) * TANK_DIAGD2; 
-	double vertex1y = obj->pos.y.doubleVal + cos(((obj->rotation + 315) % 360) * RADIAN) * TANK_DIAGD2;
+	//
+	// NOTE: MOMENTAN VERIFICA DOAR LATURA "DIN FATA"
+	//
+	double vertex1x = obj->pos.x.doubleVal + sin(((obj->rotation + 315) % 360) * RADIAN) * obj->diagonal / 2; 
+	double vertex1y = obj->pos.y.doubleVal + cos(((obj->rotation + 315) % 360) * RADIAN) * obj->diagonal / 2;
 	if(collisionMap.tiles[(long long)vertex1x][(long long)vertex1y])
 		return 1;
 
-	double vertex2x = obj->pos.x.doubleVal + sin(((obj->rotation + 45) % 360) * RADIAN) * TANK_DIAGD2; 
-	double vertex2y = obj->pos.y.doubleVal + cos(((obj->rotation + 45) % 360) * RADIAN) * TANK_DIAGD2;
+	double vertex2x = obj->pos.x.doubleVal + sin(((obj->rotation + 45) % 360) * RADIAN) * obj->diagonal / 2; 
+	double vertex2y = obj->pos.y.doubleVal + cos(((obj->rotation + 45) % 360) * RADIAN) * obj->diagonal / 2;
 	if(collisionMap.tiles[(long long)vertex2x][(long long)vertex2y])
 		return 1;
 	
 	unsigned int nextVexRot = obj->rotation + (90 - obj->rotation % 90);
 	double nextVexx = (double)((long long)obj->pos.x.doubleVal) + 0.5;
 	double nextVexy = (double)((long long)obj->pos.x.doubleVal) + 0.5;
-	nextVexx += sin((nextVexRot % 360) * RADIAN) * TANK_DIAGD2;
-	nextVexy += cos((nextVexRot % 360) * RADIAN) * TANK_DIAGD2;
+	nextVexx += sin((nextVexRot % 360) * RADIAN) * obj->diagonal / 2;
+	nextVexy += cos((nextVexRot % 360) * RADIAN) * obj->diagonal / 2;
 	
 	double m12 = (vertex2y - vertex1y) / (vertex2x - vertex1x), m1n = (nextVexx - vertex1x) / (nextVexy - vertex1y);
 	if(m1n <= m12)

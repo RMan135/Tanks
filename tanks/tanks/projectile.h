@@ -15,7 +15,8 @@ struct projectile{
 	tank* owner;
 	int damage;
 	coords pos, dim;
-	double incX100, multX; // determina miscarea proiectilului
+	double diagonal;
+	double stepX, stepY; // determina miscarea proiectilului
 	double speed; // folosita la calcularea miscarii
 	unsigned int rotation;
 };
