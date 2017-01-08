@@ -11,8 +11,7 @@ collisionBox* createCollisionBox(type* owner){
 	box->type = square;
 	box->pos = &owner->pos;
 	box->radius = owner->dim.x.doubleVal;
-	box->dim.x.doubleVal = owner->dim.x.doubleVal;
-	box->dim.y.doubleVal = owner->dim.y.doubleVal;
+	box->dim = &owner->dim;
 	box->rotation = &owner->rotation;
 	return box;
 }

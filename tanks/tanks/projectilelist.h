@@ -7,7 +7,7 @@
 #ifndef PROJECTILELIST_HEADER
 #define PROJECTILELIST_HEADER
 
-#include "projectile.h"
+struct projectile;
 
 struct projectileNode{
 	projectile* payload;

@@ -5,15 +5,13 @@
 #ifndef COLLISIONBOX_HEADER
 #define COLLISIONBOX_HEADER
 
-#include "coord.h"
 
-struct tank;
-struct projectile;
+struct coords;
 enum collisionType {square, circle};
 
 struct collisionBox{
 	collisionType type; 
-	coords *pos, dim;
+	coords *pos, *dim;
 	double radius;
 	unsigned int *rotation;
 };

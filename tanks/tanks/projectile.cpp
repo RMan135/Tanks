@@ -1,6 +1,7 @@
 #include "projectile.h"
 #include "tank.h"
 #include "projectilelist.h"
+#include "collision.h"
 #include <cmath>
 #define RADIAN 0.01745329
 #define SQRT2 1.41421356

@@ -12,7 +12,6 @@
 #define TANK_SIZE 32
 
 #include "coord.h"
-#include "collision.h"
 
 struct collisionBox;
 

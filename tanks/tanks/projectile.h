@@ -6,11 +6,11 @@
 #define PROJECTILE_HEADER
 
 #include "coord.h"
-#include "collision.h"
 
 #define PROJECTILE_SIZE 5
 
 struct tank;
+struct collisionBox;
 struct projectileNode;
 
 struct projectile{

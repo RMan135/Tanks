@@ -1,4 +1,5 @@
 #include "projectilelist.h"
+#include "projectile.h"
 
 projectileList projectilesShot;
 

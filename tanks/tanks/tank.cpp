@@ -1,4 +1,5 @@
 #include "tank.h"
+#include "collision.h"
 #include "SDL.h"
 #include <cmath>
 #define RADIAN 0.01745329
