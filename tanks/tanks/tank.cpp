@@ -38,6 +38,7 @@ void resetTank(tank* tank1, unsigned int team, double initX, double initY){
 	tank1->turretRotation = 0;
 	tank1->stepX = speed;
 	tank1->stepY = 0.0;
+	tank1->alive = 1;
 
 	int i = 0;
 	while(i < POWERUP_NUMBER){

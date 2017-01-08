@@ -2,11 +2,11 @@
 
 projectileList projectilesShot;
 
-void initProjectileList(projectileList& list){
+void initProjList(projectileList& list){
 	list.first = nullptr;
 }
 
-void destroyProjectileNode(projectileNode* projNode){
+void destroyProjNode(projectileNode* projNode){
 	destroyProjectile(projNode->payload);
 	delete projNode;
 }
@@ -29,6 +29,7 @@ void addProjNode(projectileNode*& lastNode, projectile* proj){
 	lastNode->next->next = nullptr;
 	lastNode->next->prev = lastNode;
 	lastNode->next->payload = proj;
+	lastNode->next->payload->listPos = lastNode->next;
 }
 
 void addProjNode(projectileList& list, projectile* proj){
@@ -42,6 +43,7 @@ void addProjNode(projectileList& list, projectile* proj){
 		list.first->payload = proj;
 		list.first->next = nullptr;
 		list.first->prev = nullptr;
+		list.first->payload->listPos = list.first;
 	}
 }
 

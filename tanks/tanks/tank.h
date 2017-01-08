@@ -26,13 +26,14 @@ struct tank{
 	unsigned int team;
 	unsigned long long powerups[POWERUP_NUMBER];
 	projectileType ammoType;
-	unsigned int health, maxHealth;
+	short int health, maxHealth;
 	double damageMod;
 	double speed;
 	coords pos, dim;
 	double diagonal;
 	double stepX, stepY;
 	unsigned int rotation, turretRotation;
+	bool alive;
 };
 
 extern tank* tankVector[MAX_TANK_NUMBER];
