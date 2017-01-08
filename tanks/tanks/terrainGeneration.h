@@ -142,16 +142,16 @@ bool generateMapAndConfirm(short placementChance, short emptyLimit, short occupi
 
         drawRectangle(accessibleTiles, x, y, 2, 2, 3);
         drawRectangle(accessibleTiles, x-1, y-1, 4, 4, 3);
-        playerSpawners[k].x = x;
-        playerSpawners[k].y = y;
+        playerSpawners[k].x.doubleVal = x;
+        playerSpawners[k].y.doubleVal = y;
 
         //generates powerup spawn point
         generateRandomCoordinates(x, y, accessibleTiles);
         if (!accessibleTiles.tiles[x][y]) return 0;
 
         drawRectangle(accessibleTiles, x, y, 2, 2, 3);
-        powerupSpawners[k].x = x;
-        powerupSpawners[k].y = y;
+        powerupSpawners[k].x.doubleVal = x;
+        powerupSpawners[k].y.doubleVal = y;
 
     }
 
