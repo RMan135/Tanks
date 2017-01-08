@@ -8,6 +8,7 @@
 using namespace std;
 
 #include <fstream>
+#include "coord.h"
 ifstream fin;
 
 struct matrix
@@ -28,17 +29,8 @@ short mapTheme,
 3 - spawn point nearby
 */
 
-/// mutati randurile astea unde credeti ca e mai bine
-
-struct coordinates
-{
-    double x, y;
-};
-
-coordinates playerSpawners[4];
-coordinates powerupSpawners[4];
-
-///
+coords playerSpawners[4];
+coords powerupSpawners[4];
 
 #include "terrainGeneration.h"
 
@@ -49,12 +41,12 @@ void getMap()
         >> collisionMap.height;
 
     for (int i = 0; i < 4; ++i)
-        fin >> playerSpawners[i].x
-            >> playerSpawners[i].y;
+        fin >> playerSpawners[i].x.doubleVal
+            >> playerSpawners[i].y.doubleVal;
 
     for (int i = 0; i < 4; ++i)
-        fin >> powerupSpawners[i].x
-            >> powerupSpawners[i].y;
+        fin >> powerupSpawners[i].x.doubleVal
+            >> powerupSpawners[i].y.doubleVal;
 
     for (int j = 0; j < collisionMap.height + 2; ++j)
             for (int i = 0; i < collisionMap.width + 2; ++i)
