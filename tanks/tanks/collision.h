@@ -14,16 +14,18 @@ enum collisionType {square, circle};
 struct collisionBox{
 	collisionType type; 
 	coords *pos, dim;
-	double radius; // ignorat daca type == square
-	double *rotation;
+	double radius;
+	unsigned int *rotation;
 };
 
-collisionBox* createCollisionBox(tank* owner);
-collisionBox* createCollisionBox(projectile* owner);
+// tank sau projectile
+template <class type> collisionBox* createCollisionBox(type* owner);
 void destroyCollisionBox(collisionBox* box);
 
-bool checkCollision(collisionBox* box1, collisionBox* box2);
-bool checkEnvCollision(collisionBox* box1); // coliziune cu imprejurarile (nu cu alt tanc)
+// tank sau projectile
+template <class type1, class type2> bool checkCollision(type1* box1, type2* box2);
+// tank sau projectile
+template <class type> bool checkEnvCollision(type* box1); // coliziune cu imprejurarile (nu cu alt tanc)
 bool checkEnvCollisionAcF(collisionBox* box1);
 bool checkEnvCollisionAcB(collisionBox* box1);
 bool checkEnvCollisionTnL(collisionBox* box1);

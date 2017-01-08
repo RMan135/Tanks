@@ -36,7 +36,7 @@ struct tank{
 	double speed;
 	coords pos, dim;
 	double incX100, multX;
-	double rotation, turretRotation;
+	unsigned int rotation, turretRotation;
 };
 
 extern tank* tankVector[MAX_TANK_NUMBER];
