@@ -18,13 +18,10 @@ struct collisionBox{
 	unsigned int *rotation;
 };
 
-// tank sau projectile
 template <class type> collisionBox* createCollisionBox(type* owner);
 void destroyCollisionBox(collisionBox* box);
 
-// tank sau projectile
 template <class type1, class type2> bool checkCollision(type1* box1, type2* box2);
-// tank sau projectile
 template <class type> bool checkEnvCollision(type* box1); // coliziune cu imprejurarile (nu cu alt tanc)
 bool checkEnvCollisionAcF(collisionBox* box1);
 bool checkEnvCollisionAcB(collisionBox* box1);

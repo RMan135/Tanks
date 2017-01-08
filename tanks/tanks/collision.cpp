@@ -56,3 +56,11 @@ bool checkEnvCollision(type* obj){ // coliziune cu imprejurarile (nu cu alt tanc
 		return 1;
 	return 0;
 }
+
+template collisionBox* createCollisionBox<tank>(tank*);
+template collisionBox* createCollisionBox<projectile>(projectile*);
+template bool checkCollision<tank, tank>(tank*, tank*);
+template bool checkCollision<tank, projectile>(tank*, projectile*);
+template bool checkCollision<projectile, tank>(projectile*, tank*);
+template bool checkEnvCollision<tank>(tank*);
+template bool checkEnvCollision<projectile>(projectile*);
