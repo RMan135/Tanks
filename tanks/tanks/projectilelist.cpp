@@ -17,10 +17,10 @@ void destroyList(projectileList& list){
 		projectileNode *iterProjNode = list.first, *iterHook;
 		while(iterProjNode->next != nullptr){
 			iterHook = iterProjNode->next;
-			destroyProjectileNode(iterProjNode);
+			destroyProjNode(iterProjNode);
 			iterProjNode = iterHook;
 		}
-		destroyProjectileNode(iterProjNode);
+		destroyProjNode(iterProjNode);
 		list.first = nullptr;
 	}
 }
@@ -53,16 +53,16 @@ void delProjNode(projectileNode*& projNode){ // sa presunem ca nu trimitem si nu
 	if(!prevNull && !nextNull){
 		projNode->next->prev = projNode->prev;
 		projNode->prev->next = projNode->next;
-		destroyProjectileNode(projNode);
+		destroyProjNode(projNode);
 	}else if(!prevNull && nextNull){
 		projNode->prev->next = nullptr;
-		destroyProjectileNode(projNode);
+		destroyProjNode(projNode);
 	}else if(prevNull && !nextNull){
 		projectileNode* nextToDelNode = projNode->next;
-		destroyProjectileNode(projNode);
+		destroyProjNode(projNode);
 		projNode = nextToDelNode;
 	}else if(prevNull && nextNull){
-		destroyProjectileNode(projNode);
+		destroyProjNode(projNode);
 		projNode = nullptr;
 	}
 }

@@ -6,19 +6,6 @@
 #define RADIAN 0.01745329
 #define SQRT2 1.41421356
 
-/*
-struct projectile{
-	collisionBox *colBox;
-	tank* owner;
-	int damage;
-	coords pos, dim;
-	double diagonal;
-	double stepX, stepY; // determina miscarea proiectilului
-	double speed; // folosita la calcularea miscarii
-	unsigned int rotation;
-};
-*/
-
 projectile* createProjectile(tank* shooter){
 	projectile* shotProj = new projectile;
 	shotProj->owner = shooter;

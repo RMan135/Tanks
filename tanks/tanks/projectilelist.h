@@ -20,7 +20,7 @@ struct projectileList{
 
 extern projectileList projectilesShot;
 
-void destroyProjectileNode(projectileNode* projNode);
+void destroyProjNode(projectileNode* projNode);
 
 void initProjectileList(projectileList& list);
 void destroyList(projectileList& list);
