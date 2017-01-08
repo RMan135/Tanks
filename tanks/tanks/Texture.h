@@ -24,5 +24,7 @@ public:
 	void simpleRender(int x, int y, double scale = 1);
 
 	void render(int x, int y, double angle = 0.0, double scale = 1, SDL_Rect* clip = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE, SDL_Point* center = NULL);
+
+	void setColor(Uint8 red = (Uint8)255, Uint8 green = (Uint8)255, Uint8 blue = (Uint8)255);
 };
 

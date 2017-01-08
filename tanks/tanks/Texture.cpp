@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include <iostream>
+#include <SDL.h>
 using namespace std;
 Texture::Texture()
 {
@@ -67,4 +68,9 @@ void Texture::render(int x, int y, double angle, double scale, SDL_Rect* clip, S
 		renderSpace.h = clip->h;
 	}
 	SDL_RenderCopyEx(renderTarget, texture, clip, &renderSpace, angle, center, flip);
+}
+
+void Texture::setColor(Uint8 red, Uint8 green, Uint8 blue)
+{
+	SDL_SetTextureColorMod(texture, red, green, blue);
 }
