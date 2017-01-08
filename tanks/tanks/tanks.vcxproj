@@ -71,12 +71,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>lib\SDL2_image-2.0.1\include;lib\SDL2-2.0.5\include;$(IncludePath)</IncludePath>
     <LibraryPath>lib\SDL2_image-2.0.1\lib\x86;lib\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -117,11 +119,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="collision.cpp" />
+    <ClCompile Include="coord.cpp" />
+    <ClCompile Include="projectile.cpp" />
+    <ClCompile Include="projectilelist.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="tank.cpp" />
+    <ClCompile Include="terrain.cpp" />
+    <ClCompile Include="terrainGeneration.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Tileset.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="collision.h" />
+    <ClInclude Include="coord.h" />
+    <ClInclude Include="projectile.h" />
+    <ClInclude Include="projectilelist.h" />
+    <ClInclude Include="tank.h" />
+    <ClInclude Include="terrain.h" />
+    <ClInclude Include="terrainGeneration.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Tileset.h" />
   </ItemGroup>

@@ -1,10 +1,9 @@
 #include <SDL.h>
-#include <SDL_image.h>
 #include <iostream>
 #include "Texture.h"
+#include "Tileset.h"
 #include "terrain.h"
 #include "terrainGeneration.h"
-#include "Tileset.h"
 using namespace std;
 
 #define SCREEN_WIDTH 768
