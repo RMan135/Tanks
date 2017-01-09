@@ -1,4 +1,3 @@
-#include "terrain.h"
 #include "terrainGeneration.h"
 
 void copyMatrix(matrix &matCopy, matrix mat)
