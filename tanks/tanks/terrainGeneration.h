@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include "terrain.h"
 
 void copyMatrix(matrix &matCopy, matrix mat);
 
