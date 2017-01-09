@@ -12,6 +12,8 @@ projectile* createProjectile(tank* shooter){
 	shotProj->damage = 25 + (shooter->ammoType * 20);
 	shotProj->speed = 0.5 - (shooter->ammoType * 0.075);
 	shotProj->oneshot = shooter->powerups[oneshot];
+	if(shooter->powerups[oneshot])
+		--shooter->powerups[oneshot];
 	shotProj->pos.x.doubleVal = shooter->pos.x.doubleVal;
 	shotProj->pos.y.doubleVal = shooter->pos.y.doubleVal;
 	shotProj->dim.x.doubleVal = PROJECTILE_SIZE;

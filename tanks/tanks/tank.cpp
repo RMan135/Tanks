@@ -1,5 +1,7 @@
 #include "tank.h"
 #include "collision.h"
+#include "projectile.h"
+#include "projectilelist.h"
 #include "SDL.h"
 #include <cmath>
 #define RADIAN 0.01745329
@@ -87,14 +89,18 @@ bool turn(tank* tank1, lor direction){
 	if(!checkEnvCollision(tank1)){
 		return 0;
 	}
+	return 1;
 }
 
 void shoot(tank* tank1){
-
+	projectile* shot = createProjectile(tank1);
+	addProjNode(projectilesShot, shot);
 }
 
 void aim(tank* tank1, coords where){
-
+	double m = (where.x.doubleVal - tank1->pos.x.doubleVal) / 
+				(where.y.doubleVal - tank1->pos.y.doubleVal);
+	tank1->turretRotation = atan(m) / RADIAN;
 }
 
 void addPowerup(tank* tank1, powerupCode what){

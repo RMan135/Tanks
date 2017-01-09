@@ -34,7 +34,6 @@ bool checkCollision(type1* obj1, type2* obj2){
 	{
 		unsigned int rot1 = obj1->rotation % 90;
 		unsigned int rot2 = obj2->rotation % 90;
-		// work in progress
 	}
 	return 1;
 }
@@ -44,13 +43,13 @@ bool checkEnvCollision(type* obj){ // coliziune cu imprejurarile (nu cu alt tanc
 	//
 	// NOTE: MOMENTAN VERIFICA DOAR LATURA "DIN FATA"
 	//
-	double vertex1x = obj->pos.x.doubleVal + sin(((obj->rotation + 315) % 360) * RADIAN) * obj->diagonal / 2; 
-	double vertex1y = obj->pos.y.doubleVal + cos(((obj->rotation + 315) % 360) * RADIAN) * obj->diagonal / 2;
+	double vertex1x = obj->pos.x.doubleVal + sin(((obj->rotation + 360 - 90 - 45) % 360) * RADIAN) * obj->diagonal / 2; 
+	double vertex1y = obj->pos.y.doubleVal + cos(((obj->rotation + 360 - 90 - 45) % 360) * RADIAN) * obj->diagonal / 2;
 	if(collisionMap.tiles[(long long)vertex1x][(long long)vertex1y])
 		return 1;
 
-	double vertex2x = obj->pos.x.doubleVal + sin(((obj->rotation + 45) % 360) * RADIAN) * obj->diagonal / 2; 
-	double vertex2y = obj->pos.y.doubleVal + cos(((obj->rotation + 45) % 360) * RADIAN) * obj->diagonal / 2;
+	double vertex2x = obj->pos.x.doubleVal + sin(((obj->rotation + 360 - 45) % 360) * RADIAN) * obj->diagonal / 2; 
+	double vertex2y = obj->pos.y.doubleVal + cos(((obj->rotation + 360 - 45) % 360) * RADIAN) * obj->diagonal / 2;
 	if(collisionMap.tiles[(long long)vertex2x][(long long)vertex2y])
 		return 1;
 	
