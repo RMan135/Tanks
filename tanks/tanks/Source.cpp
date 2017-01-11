@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Texture.h"
 #include "Tileset.h"
+#include "Button.h"
 #include "terrain.h"
 #include "terrainGeneration.h"
 using namespace std;
@@ -10,6 +11,13 @@ using namespace std;
 #define SCREEN_HEIGHT 576
 #define FPS 60
 
+enum State
+{
+	MAIN_MENU = 0, GAME_SETUP = 1, PLAYING = 2, GAME_OVER = 3, MAP_SELECTION = 4, GENERATE = 5, LOAD = 5
+};
+
+State gameState = MAIN_MENU;
+
 Uint32 startingTick;
 
 SDL_Window *WINDOW = NULL;
@@ -17,9 +25,12 @@ SDL_Renderer *RENDER_TARGET = NULL;
 
 bool running = true;
 
-SDL_Event event;
-
 Tileset currentTileset;
+
+void handleEvents();
+
+SDL_Event e;
+int mouseX, mouseY;
 
 int main(int argc, char* args[])
 {
@@ -40,7 +51,7 @@ int main(int argc, char* args[])
 		running = false;
 	}
 
-	currentTileset.loadTileset("desert", RENDER_TARGET);
+	currentTileset.loadTileset("cave", RENDER_TARGET);
 	selectMap(4);
 
 	while(running)
@@ -53,22 +64,16 @@ int main(int argc, char* args[])
 		SDL_RenderClear(RENDER_TARGET);
 
 		// Handle events
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_QUIT)
-			{
-				running = false;
-				break;
-			}
-		}
-		
+		handleEvents();
+
+		/*
 		for (int i = 0; i <= collisionMap.width + 1; i++)
 			for (int j = 0; j <= collisionMap.height + 1; j++)
 				if (collisionMap.tiles[i][j] == 1)
 					currentTileset.wall.simpleRender(i * 24, j * 24);
 				else
 					currentTileset.ground.simpleRender(i * 24, j * 24);
-
+		*/
 
 		// Update window
 		SDL_RenderPresent(RENDER_TARGET);
@@ -83,4 +88,22 @@ int main(int argc, char* args[])
 	SDL_DestroyWindow(WINDOW);
 	SDL_Quit();
 	return 0;
+}
+
+void handleEvents()
+{
+	SDL_GetMouseState(&mouseX, &mouseY);
+
+	while (SDL_PollEvent(&e))
+	{
+		if (e.type == SDL_QUIT)
+		{
+			running = false;
+			break;
+		}
+		if (e.type == SDL_MOUSEBUTTONDOWN)
+		{
+			
+		}
+	}
 }

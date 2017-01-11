@@ -17,9 +17,17 @@ public:
 
 	~Texture();
 
+	int getWidth();
+
+	int getHeight();
+
 	void setRenderTarget(SDL_Renderer *newRenderTarget);
 
+	SDL_Renderer *getRenderTarget();
+
 	void loadTexture(char path[]);
+
+	SDL_Texture *getTexture();
 
 	void simpleRender(int x, int y, double scale = 1);
 

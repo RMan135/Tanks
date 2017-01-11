@@ -3,7 +3,7 @@
 
 void Tileset::loadTileset(char theme[], SDL_Renderer *renderTarget)
 {
-	char path[256] = "media\\";
+	char path[256] = "media/";
 	char aux[256];
 	strcpy_s(aux, path);
 	strcat_s(aux, theme);

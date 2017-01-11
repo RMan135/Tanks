@@ -17,9 +17,24 @@ Texture::~Texture()
 	SDL_free(renderTarget);
 }
 
+int Texture::getWidth()
+{
+	return width;
+}
+
+int Texture::getHeight()
+{
+	return height;
+}
+
 void Texture::setRenderTarget(SDL_Renderer *newRenderTarget)
 {
 	renderTarget = newRenderTarget;
+}
+
+SDL_Renderer* Texture::getRenderTarget()
+{
+	return renderTarget;
 }
 
 void Texture::loadTexture(char path[])
@@ -44,6 +59,11 @@ void Texture::loadTexture(char path[])
 		width = image->w;
 		height = image->h;
 	}
+}
+
+SDL_Texture* Texture::getTexture()
+{
+	return texture;
 }
 
 void Texture::simpleRender(int x, int y, double scale)

@@ -1,0 +1,9 @@
+MAIN_MENU
+2
+
+Play
+change_state
+1
+
+Exit
+quit
