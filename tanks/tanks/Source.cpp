@@ -36,6 +36,7 @@ void handleEvents();
 
 SDL_Event e;
 int mouseX, mouseY;
+bool mouseDown = false;
 
 Texture t;
 int angle = 0;
@@ -96,11 +97,14 @@ int main(int argc, char* args[])
 
 		// Handle events
 		handleEvents();
+
+
 		if (gameState == PLAYING)
 			showMap();
 		else
 			previewMap(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, 12);
 		menus[gameState].show();
+
 
 		// Update window
 		SDL_RenderPresent(RENDER_TARGET);
@@ -139,7 +143,7 @@ void init()
 void handleEvents()
 {
 	SDL_GetMouseState(&mouseX, &mouseY);
-
+	
 	while (SDL_PollEvent(&e))
 	{
 		if (e.type == SDL_QUIT)
@@ -170,8 +174,9 @@ void handleEvents()
 				randomMap();
 			}
 		}
-		if (e.type == SDL_MOUSEBUTTONDOWN)
+		if (e.type == SDL_MOUSEBUTTONDOWN && mouseDown == false)
 		{
+			mouseDown = true;
 			int k;
 			for (k = 0; k < menus[gameState].getNumberOfButtons(); k++)
 			{
@@ -180,21 +185,29 @@ void handleEvents()
 					if (menus[gameState].getButtons()[k].isJob("change_state"))
 					{
 						changeGameState(menus[gameState].getButtons()[k].getJobAux());
+						break;
 					}
 					if (menus[gameState].getButtons()[k].isJob("quit"))
 					{
 						running = false;
+						break;
 					}
 					if (menus[gameState].getButtons()[k].isJob("rand_map"))
 					{
 						randomMap();
+						break;
 					}
 					if (menus[gameState].getButtons()[k].isJob("next_map"))
 					{
 						nextMap();
+						break;
 					}
 				}
 			}
+		}
+		if (e.type == SDL_MOUSEBUTTONUP)
+		{
+			mouseDown = false;
 		}
 	}
 }
@@ -239,7 +252,10 @@ void changeGameState(int newGameState)
 	if (newGameState < 0 || newGameState > 6)
 		cout << "Tried to change to invalid game state!" << endl;
 	else
+	{
+		cout << "Changed game state to " << (State)newGameState << endl;
 		gameState = (State)newGameState;
+	}
 }
 
 void nextMap()
