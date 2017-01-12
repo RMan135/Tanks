@@ -4,6 +4,8 @@ ifstream fin;
 
 matrix collisionMap;
 matrix accessibleTiles;
+short isSpawnPoint[MAX_TILES_WIDTH][MAX_TILES_HEIGHT];
+
 short mapTheme,
       noOfPlayers;
 
@@ -30,6 +32,22 @@ void getMap()
 
 }
 
+void createSpawnerMatrix(coords vec[4], short value)
+{
+    short x, y;
+
+    for (int i = 0; i < 4; ++i)
+	{
+	    x = (short)vec[i].x.doubleVal;
+          y = (short)vec[i].y.doubleVal;
+
+	    isSpawnPoint[ x ][ y ] = value;
+	    isSpawnPoint[x-1][ y ] = value;
+          isSpawnPoint[ x ][y-1] = value;
+          isSpawnPoint[x-1][y-1] = value;
+	}
+}
+
 void selectMap(short choice)
 {
     if (choice >= 0 && choice < NUMBER_OF_PRESET_MAPS)
@@ -48,4 +66,7 @@ void selectMap(short choice)
 
     else
     generateMap();
+      
+    createSpawnerMatrix(playerSpawners, 1);
+    createSpawnerMatrix(powerupSpawners, 2);
 }
