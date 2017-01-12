@@ -48,6 +48,14 @@ void createSpawnerMatrix(coords vec[4], short value)
 	}
 }
 
+void clearSpawnerMatrix()
+{
+	for (int j = 0; j < collisionMap.height + 2; ++j)
+		for (int i = 0; i < collisionMap.width + 2; ++i)
+			isSpawnPoint[i][j] = 0;
+}
+
+
 void selectMap(short choice)
 {
     if (choice >= 0 && choice < NUMBER_OF_PRESET_MAPS)
@@ -66,7 +74,7 @@ void selectMap(short choice)
 
     else
     generateMap();
-      
+	clearSpawnerMatrix();
     createSpawnerMatrix(playerSpawners, 1);
     createSpawnerMatrix(powerupSpawners, 2);
 }
