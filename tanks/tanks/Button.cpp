@@ -40,6 +40,16 @@ void Button::unhide()
 	visible = true;
 }
 
+void Button::setX(int X)
+{
+	x = X;
+}
+
+void Button::setY(int Y)
+{
+	y = Y;
+}
+
 bool Button::pointIsInside(int pointX, int pointY)
 {
 	if (pointX >= x && pointX <= x+width && pointY >= y && pointY <= y+height)

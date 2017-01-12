@@ -122,6 +122,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="coord.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="projectile.cpp" />
     <ClCompile Include="projectilelist.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="coord.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="projectile.h" />
     <ClInclude Include="projectilelist.h" />
     <ClInclude Include="tank.h" />

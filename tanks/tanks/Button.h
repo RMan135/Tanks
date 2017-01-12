@@ -26,6 +26,10 @@ public:
 
 	void unhide();
 
+	void setX(int X);
+
+	void setY(int Y);
+
 	bool pointIsInside(int pointX, int pointY);
 
 	void setRenderTarget(SDL_Renderer *target);

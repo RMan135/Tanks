@@ -3,8 +3,10 @@
 #include "Texture.h"
 #include "Tileset.h"
 #include "Button.h"
+#include "Menu.h"
 #include "terrain.h"
 #include "terrainGeneration.h"
+#include "coord.h"
 using namespace std;
 
 #define SCREEN_WIDTH 768
@@ -13,10 +15,13 @@ using namespace std;
 
 enum State
 {
-	MAIN_MENU = 0, GAME_SETUP = 1, PLAYING = 2, GAME_OVER = 3, MAP_SELECTION = 4, GENERATE = 5, LOAD = 5
+	MAIN_MENU = 0, GAME_SETUP = 1, PLAYING = 2, GAME_OVER = 3, MAP_SELECTION = 4, GENERATE = 5, LOAD = 6
 };
 
+Menu menus[7];
+
 State gameState = MAIN_MENU;
+void changeGameState(int newGameState);
 
 Uint32 startingTick;
 
@@ -31,6 +36,11 @@ void handleEvents();
 
 SDL_Event e;
 int mouseX, mouseY;
+
+Texture t;
+int angle = 0;
+
+void previewMap(int x, int y, int scale);
 
 int main(int argc, char* args[])
 {
@@ -52,7 +62,38 @@ int main(int argc, char* args[])
 	}
 
 	currentTileset.loadTileset("cave", RENDER_TARGET);
-	selectMap(4);
+	selectMap(1);
+
+	int i;
+	for (i = 0; i < 7; i++)
+	{
+		menus[i].setRenderTarget(RENDER_TARGET);
+		switch (i)
+		{
+		case MAIN_MENU:
+			menus[i].loadMenu("MAIN_MENU");
+			break;
+		case GAME_SETUP:
+			menus[i].loadMenu("GAME_SETUP");
+			break;
+		case PLAYING:
+			menus[i].loadMenu("PLAYING");
+			break;
+		case GAME_OVER:
+			menus[i].loadMenu("GAME_OVER");
+			break;
+		case MAP_SELECTION:
+			menus[i].loadMenu("MAP_SELECTION");
+			break;
+		case GENERATE:
+			menus[i].loadMenu("GENERATE");
+			break;
+		case LOAD:
+			menus[i].loadMenu("LOAD");
+			break;
+		}
+	}
+
 
 	while(running)
 	{
@@ -66,14 +107,9 @@ int main(int argc, char* args[])
 		// Handle events
 		handleEvents();
 
-		/*
-		for (int i = 0; i <= collisionMap.width + 1; i++)
-			for (int j = 0; j <= collisionMap.height + 1; j++)
-				if (collisionMap.tiles[i][j] == 1)
-					currentTileset.wall.simpleRender(i * 24, j * 24);
-				else
-					currentTileset.ground.simpleRender(i * 24, j * 24);
-		*/
+		previewMap(SCREEN_WIDTH / 2 - 48, SCREEN_HEIGHT / 4, 12);
+		
+		menus[gameState].show();
 
 		// Update window
 		SDL_RenderPresent(RENDER_TARGET);
@@ -101,9 +137,50 @@ void handleEvents()
 			running = false;
 			break;
 		}
-		if (e.type == SDL_MOUSEBUTTONDOWN)
+		if (e.type == SDL_KEYDOWN)
 		{
-			
+			if (e.key.keysym.sym == SDLK_w)
+			{
+				//move forwards
+			}
+			if (e.key.keysym.sym == SDLK_s)
+			{
+				//move backwards
+			}
+			if (e.key.keysym.sym == SDLK_a)
+			{
+				//rotate left
+			}
+			if (e.key.keysym.sym == SDLK_d)
+			{
+				//rorate right
+			}
 		}
 	}
+}
+
+void previewMap(int x, int y, int scale)
+{
+	for (int i = 0; i <= collisionMap.width + 1; i++)
+		for (int j = 0; j <= collisionMap.height + 1; j++)
+			if (collisionMap.tiles[i][j] == 1)
+			{
+				SDL_SetRenderDrawColor(RENDER_TARGET, 64, 64, 64, 255);
+				SDL_Rect renderSpace = { x + i * scale, y + j * scale, scale, scale };
+				SDL_RenderFillRect(RENDER_TARGET, &renderSpace);
+			}
+			else
+			{
+				SDL_SetRenderDrawColor(RENDER_TARGET, 128, 128, 128, 255);
+				SDL_Rect renderSpace = { x + i * scale, y + j * scale, scale, scale };
+				SDL_RenderFillRect(RENDER_TARGET, &renderSpace);
+			}
+}
+
+void changeGameState(int newGameState)
+{
+	if (newGameState < 0 || newGameState > 6)
+		cout << "Tried to change to invalid game state!" << endl;
+	else
+		gameState = (State)newGameState;
 }
