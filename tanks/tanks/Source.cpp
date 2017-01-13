@@ -141,7 +141,10 @@ int main(int argc, char* args[])
 				}
 				if (tankVector[i]->alive)
 				{
+					SDL_Rect hpBar = { getLongX(tankVector[i]) - 3, getLongY(tankVector[i]) - 12, tankVector[i]->health/3, 3 };
+					SDL_SetRenderDrawColor(RENDER_TARGET, 255 - tankVector[i]->health * 2, tankVector[i]->health * 2, 0, 255);
 					tankTexture.render(getLongX(tankVector[i]), getLongY(tankVector[i]), tankVector[i]->rotation);
+					SDL_RenderFillRect(RENDER_TARGET, &hpBar);
 				}
 				int j = 0;
 				while (j < MAX_PROJECTILES_ONSCREEN) {
