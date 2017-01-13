@@ -42,6 +42,7 @@ tank* createTank(tankType type, unsigned int team, double initX, double initY){
 		}
 		ret->colBox = createCollisionBox(ret);
 	}
+	addPowerup(ret, powerupCode::god);
 	return ret;
 }
 
@@ -54,9 +55,9 @@ void resetTank(tank* tank1, tankType type, unsigned int team, double initX, doub
 	tank1->pos.y.doubleVal = initY + tank1->dim.y.doubleVal / 2;
 	tank1->pos.type = coordType_double;
 	tank1->diagonal = SQRT2 * tank1->dim.x.doubleVal;
-	tank1->maxHealth = 80 + type * 20;
+	tank1->maxHealth = 80 + type * 25;
 	tank1->health = tank1->maxHealth;
-	tank1->damageMod = 0.8 + type / 10;
+	tank1->damageMod = 0.5 + type / 4;
 	tank1->nextShot = 0;
 	tank1->cooldown = 350 * type;
 	tank1->speed = 0.075 + 1 / (type * 20) ;
@@ -75,14 +76,17 @@ void resetTank(tank* tank1, tankType type, unsigned int team, double initX, doub
 
 void addDiff(tank* tank1, unsigned short howmuch) {
 	tank1->maxHealth += 5 * howmuch;
+	tank1->health = tank1->maxHealth;
 	tank1->damageMod += 0.025 * howmuch;
 	tank1->speed += 0.0025 * howmuch;
 	tank1->rotationSpeed += (unsigned int)(0.3 * howmuch);
 }
 
 void subDiff(tank* tank1, unsigned short howmuch) {
-	if(tank1->maxHealth - 5 * howmuch > 10)
+	if (tank1->maxHealth - 5 * howmuch > 10) {
 		tank1->maxHealth -= 5 * howmuch;
+		tank1->health = tank1->maxHealth;
+	}
 	if(tank1->damageMod - 0.025 * howmuch > 0.1)
 		tank1->damageMod -= 0.025 * howmuch;
 	if(tank1->speed - 0.0025 * howmuch > 0.001)

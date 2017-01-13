@@ -9,7 +9,7 @@ projectile* createProjectile(tank* shooter){
 	projectile* shotProj = new projectile;
 	shotProj->owner = shooter;
 	shotProj->damage = (int)(25 + (shooter->ammoType * 15) * shooter->damageMod);
-	shotProj->speed = 0.1 - (double)(shooter->ammoType * 0.02);
+	shotProj->speed = 0.1 - (double)(shooter->ammoType * 0.015);
 	shotProj->oneshot = shooter->powerups[oneshot];
 	if(shooter->powerups[oneshot])
 		--shooter->powerups[oneshot];
