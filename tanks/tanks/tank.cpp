@@ -71,7 +71,6 @@ void resetTank(tank* tank1, tankType type, unsigned int team, double initX, doub
 		tank1->powerups[i] = 0;
 		++i;
 	}
-	addPowerup(tank1, powerupCode::god);
 }
 
 void addDiff(tank* tank1, unsigned short howmuch) {
@@ -111,16 +110,7 @@ bool move(tank* tank1, fob sense){ // returneaza 0 daca nu poate
 	tank1->pos.x.doubleVal += tank1->stepX * sense;
 	tank1->pos.y.doubleVal += tank1->stepY * sense;
 	if(!checkEnvCollision(tank1)){
-		int i = 0; 
-
-		/*
-		while (i < MAX_POWERUP_NUMBER) {
-			if (checkCollision(tank1, powerUpVector[i])) {
-				addPowerup(tank1, powerUpVector[i]);
-				//powerUpVector[i]->
-			}
-		}*/ 
-
+		int i = 0;
 		while(i < MAX_TANK_NUMBER){
 			if(tankVector[i] != tank1 && tankVector[i] != nullptr)
 				if(checkCollision(tank1, tankVector[i]))
