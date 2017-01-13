@@ -21,7 +21,18 @@ enum State
 Menu menus[7];
 
 State gameState = MAIN_MENU;
+bool pause = false;
 void changeGameState(int newGameState);
+int numberOfHumans = 1;
+int numberOfEnemies = 1;
+int difficulty = 1;
+
+void addHuman();
+void addEnemy();
+void removeHuman();
+void removeEnemy();
+void increaseDifficulty();
+void decreaseDifficulty();
 
 Uint32 startingTick;
 
@@ -47,8 +58,10 @@ void randomMap();
 void showMap();
 
 void init();
+void displayNumber(int x, int y, int n, int scale);
+void displayDifficulty(int x, int y, int n, int scale);
 
-int currentMap = 0;
+int currentMap = -1;
 
 int main(int argc, char* args[])
 {
@@ -85,6 +98,7 @@ int main(int argc, char* args[])
 	}
 
 	currentTileset.loadTileset("cave", RENDER_TARGET);
+	nextMap();
 
 	while (running)
 	{
@@ -100,11 +114,24 @@ int main(int argc, char* args[])
 
 
 		if (gameState == PLAYING)
+		{
 			showMap();
-		else
-			previewMap(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, 12);
+		}
+
+		// show tanks here
+
+		if(gameState == GAME_SETUP || gameState == MAP_SELECTION || gameState == GENERATE || gameState == LOAD)
+			previewMap(SCREEN_WIDTH / 2 - 64, SCREEN_HEIGHT / 4, 12);
 		menus[gameState].show();
 
+		if (gameState == GAME_SETUP)
+		{
+			displayNumber(138, 170, numberOfHumans, 12);
+			displayNumber(138, 202, numberOfEnemies, 12);
+			displayDifficulty(138, 234, difficulty, 12);
+		}
+
+		cout << mouseX/24 << " " << mouseY/24 << endl;
 
 		// Update window
 		SDL_RenderPresent(RENDER_TARGET);
@@ -120,7 +147,6 @@ int main(int argc, char* args[])
 	SDL_Quit();
 	return 0;
 }
-
 void init()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -202,6 +228,36 @@ void handleEvents()
 						nextMap();
 						break;
 					}
+					if (menus[gameState].getButtons()[k].isJob("add_human"))
+					{
+						addHuman();
+						break;
+					}
+					if (menus[gameState].getButtons()[k].isJob("add_enemy"))
+					{
+						addEnemy();
+						break;
+					}
+					if (menus[gameState].getButtons()[k].isJob("remove_human"))
+					{
+						removeHuman();
+						break;
+					}
+					if (menus[gameState].getButtons()[k].isJob("remove_enemy"))
+					{
+						removeEnemy();
+						break;
+					}
+					if (menus[gameState].getButtons()[k].isJob("inc_dif"))
+					{
+						increaseDifficulty();
+						break;
+					}
+					if (menus[gameState].getButtons()[k].isJob("dec_dif"))
+					{
+						decreaseDifficulty();
+						break;
+					}
 				}
 			}
 		}
@@ -218,18 +274,22 @@ void previewMap(int x, int y, int scale)
 		for (int j = 0; j <= collisionMap.height + 1; j++)
 			if (collisionMap.tiles[i][j] == 1)
 			{
-				SDL_SetRenderDrawColor(RENDER_TARGET, 64, 64, 64, 255);
+				SDL_SetRenderDrawColor(RENDER_TARGET, 0, 128, 0, 255);
 				SDL_Rect renderSpace = { x + i * scale, y + j * scale, scale, scale };
-				SDL_RenderFillRect(RENDER_TARGET, &renderSpace);
+				SDL_RenderDrawRect(RENDER_TARGET, &renderSpace);
+				SDL_RenderDrawLine(RENDER_TARGET, x + i*scale, y + j*scale, x + i*scale + scale, y + j*scale + scale);
+				SDL_RenderDrawLine(RENDER_TARGET, x + i*scale + scale, y + j*scale, x + i*scale, y + j*scale + scale);
 			}
 			else
 			{
-				if(isSpawnPoint[i][j] == 1)
-					SDL_SetRenderDrawColor(RENDER_TARGET, 64, 128, 255, 255);
+				if (isSpawnPoint[i][j] == 1)
+					SDL_SetRenderDrawColor(RENDER_TARGET, 255, 255, 0, 255);
 				else
-					SDL_SetRenderDrawColor(RENDER_TARGET, 128, 128, 128, 255);
+					SDL_SetRenderDrawColor(RENDER_TARGET, 0, 32, 0, 255);
 				SDL_Rect renderSpace = { x + i * scale, y + j * scale, scale, scale };
-				SDL_RenderFillRect(RENDER_TARGET, &renderSpace);
+				SDL_RenderDrawRect(RENDER_TARGET, &renderSpace);
+				SDL_RenderDrawLine(RENDER_TARGET, x + i*scale, y + j*scale, x + i*scale + scale, y + j*scale + scale);
+				SDL_RenderDrawLine(RENDER_TARGET, x + i*scale + scale, y + j*scale, x + i*scale, y + j*scale + scale);
 			}
 }
 
@@ -270,7 +330,7 @@ void nextMap()
 		currentTileset.loadTileset("cave", RENDER_TARGET);
 		break;
 	case 2:
-		currentTileset.loadTileset("desert", RENDER_TARGET);
+		currentTileset.loadTileset("ruins", RENDER_TARGET);
 		break;
 	case 3:
 		currentTileset.loadTileset("desert", RENDER_TARGET);
@@ -292,10 +352,91 @@ void randomMap()
 		currentTileset.loadTileset("cave", RENDER_TARGET);
 		break;
 	case 2:
-		currentTileset.loadTileset("desert", RENDER_TARGET);
+		currentTileset.loadTileset("ruins", RENDER_TARGET);
 		break;
 	case 3:
 		currentTileset.loadTileset("desert", RENDER_TARGET);
 		break;
 	}
 }
+
+void addHuman()
+{
+	if (numberOfHumans + numberOfEnemies < 4 && numberOfHumans < 2)
+		numberOfHumans++;
+	else
+		cout << '\a';
+}
+
+void addEnemy()
+{
+	if (numberOfHumans + numberOfEnemies < 4)
+		numberOfEnemies++;
+	else
+		cout << '\a';
+}
+
+void removeHuman()
+{
+	if (numberOfHumans > 1)
+		numberOfHumans--;
+	else
+		cout << '\a';
+}
+
+void removeEnemy()
+{
+	if (numberOfEnemies + numberOfHumans - 1 >= 2)
+		numberOfEnemies--;
+	else
+		cout << '\a';
+
+}
+
+void increaseDifficulty()
+{
+	if (difficulty < 3)
+		difficulty++;
+	else
+		cout << '\a';
+}
+
+void decreaseDifficulty()
+{
+	if (difficulty > 1)
+		difficulty--;
+	else
+		cout << '\a';
+}
+
+void displayNumber(int x, int y, int n, int scale)
+{
+	SDL_SetRenderDrawColor(RENDER_TARGET, 255, 255, 255, 255);
+	int i;
+	for (i = 0; i < n; i++)
+	{
+		SDL_RenderDrawLine(RENDER_TARGET, x + (i * scale/n), y, x + (i * scale/n), y + scale);
+	}
+}
+
+void displayDifficulty(int x, int y, int n, int scale)
+{
+	switch (difficulty)
+	{
+	case 1:
+		SDL_SetRenderDrawColor(RENDER_TARGET, 255, 255, 0, 255);
+		break;
+	case 2:
+		SDL_SetRenderDrawColor(RENDER_TARGET, 255, 128, 0, 255);
+		break;
+	case 3:
+		SDL_SetRenderDrawColor(RENDER_TARGET, 255, 0, 0, 255);
+	}
+	int i;
+	for (i = 0; i < n; i++)
+	{
+		SDL_RenderDrawLine(RENDER_TARGET, x , y + (i*scale/4) + scale/4, x + scale/2, y + i*scale/4);
+		SDL_RenderDrawLine(RENDER_TARGET, x + scale/2, y + (i*scale / 4) , x + scale, y + i*scale / 4 + scale/4);
+	}
+}
+

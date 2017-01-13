@@ -58,6 +58,7 @@ void clearSpawnerMatrix()
 
 void selectMap(short choice)
 {
+	noOfPlayers = 4;
     if (choice >= 0 && choice < NUMBER_OF_PRESET_MAPS)
     {
         switch (choice)
@@ -75,6 +76,6 @@ void selectMap(short choice)
     else
     generateMap();
 	clearSpawnerMatrix();
+	createSpawnerMatrix(powerupSpawners, 2);
     createSpawnerMatrix(playerSpawners, 1);
-    createSpawnerMatrix(powerupSpawners, 2);
 }
