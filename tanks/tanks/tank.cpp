@@ -94,13 +94,17 @@ bool move(tank* tank1, fob sense){ // returneaza 0 daca nu poate
 
 bool turn(tank* tank1, lor direction){
 	tank1->rotation = (360 + tank1->rotation + tank1->rotationSpeed * direction) % 360;
-	if(checkEnvCollision(tank1)){ //checkEnvCollision2Side(tank1)
+	if(checkEnvCollision(tank1)){
 		tank1->rotation = (360 + tank1->rotation - tank1->rotationSpeed * direction) % 360;
 		return 0;
 	}
 	tank1->stepX = (double)(cos(tank1->rotation * RADIAN) * tank1->speed);
 	tank1->stepY = (double)(sin(tank1->rotation * RADIAN) * tank1->speed);
 	return 1;
+}
+
+void changeAmmo(tank* tank1, projectileType ammo) {
+	tank1->ammoType = ammo;
 }
 
 void shoot(tank* tank1) {

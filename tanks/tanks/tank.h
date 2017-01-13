@@ -9,12 +9,14 @@
 #define TIMED_POWERUPS 3
 #define MAX_TANK_NUMBER 4
 #define SCORE_UNIT 1000
+#define MAX_PROJECTILES_ONSCREEN  5
 
 #define TANK_SIZE 1.33333333
 
 #include "coord.h"
 
 struct collisionBox;
+struct projectile;
 
 enum powerupCode {god, speed, damage, heal, oneshot};
 enum lor {left = -1, right = 1}; // left or right (sens trigonometric sau invers, defapt...)
@@ -26,6 +28,7 @@ struct tank{
 	unsigned int team;
 	unsigned long long powerups[POWERUP_NUMBER];
 	projectileType ammoType;
+	projectile* projOnScreen[MAX_PROJECTILES_ONSCREEN];
 	short int health, maxHealth;
 	double damageMod;
 	double speed;
@@ -46,6 +49,7 @@ tank* createTank(unsigned int team, double initX, double initY);
 void resetTank(tank* tank1, unsigned int team, double initX, double initY);
 void destroyTank(tank* tank);
 
+void changeAmmo(tank* tank1, projectileType ammo);
 bool move(tank* tank1, fob sense); // returneaza 0 daca nu poate
 bool turn(tank* tank1, lor direction);
 void shoot(tank* tank1);
