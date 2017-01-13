@@ -51,6 +51,8 @@ tank* createTank(tankType type, unsigned int team, double initX, double initY);
 void resetTank(tank* tank1, tankType type, unsigned int team, double initX, double initY);
 void destroyTank(tank* tank);
 
+void addDiff(tank* tank1, unsigned short howmuch);
+void subDiff(tank* tank1, unsigned short howmuch);
 void changeAmmo(tank* tank1, projectileType ammo);
 bool move(tank* tank1, fob sense); // returneaza 0 daca nu poate
 bool turn(tank* tank1, lor direction);
