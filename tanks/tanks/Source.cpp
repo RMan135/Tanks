@@ -4,6 +4,7 @@
 #include "Tileset.h"
 #include "Button.h"
 #include "Menu.h"
+#include "PowerUp.h"
 #include "terrain.h"
 #include "terrainGeneration.h"
 #include "coord.h"
@@ -19,6 +20,8 @@ enum State
 };
 
 Menu menus[7];
+
+PowerUp powerUp;
 
 State gameState = MAIN_MENU;
 bool pause = false;
@@ -99,6 +102,7 @@ int main(int argc, char* args[])
 
 	currentTileset.loadTileset("cave", RENDER_TARGET);
 	nextMap();
+	powerUp.setPowerUp(5, 5, god, RENDER_TARGET);
 
 	while (running)
 	{
@@ -116,6 +120,7 @@ int main(int argc, char* args[])
 		if (gameState == PLAYING)
 		{
 			showMap();
+			powerUp.show();
 		}
 
 		// show tanks here
