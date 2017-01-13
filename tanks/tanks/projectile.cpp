@@ -1,6 +1,5 @@
 #include "projectile.h"
 #include "tank.h"
-#include "projectilelist.h"
 #include "collision.h"
 #include <cmath>
 #define RADIAN 0.01745329
@@ -24,12 +23,22 @@ projectile* createProjectile(tank* shooter){
 	shotProj->rotation = shooter->rotation;
 	shotProj->stepX = sin((shotProj->rotation % 360) * RADIAN) * speed;
 	shotProj->stepY = cos((shotProj->rotation % 360) * RADIAN) * speed;
+	shotProj->colBox = createCollisionBox(shotProj);
 	return shotProj;
 }
 
 void destroyProjectile(projectile* proj){
+	unsigned int iterNode = 0;
+	while (iterNode < MAX_PROJECTILES_ONSCREEN) {
+		if (proj->owner->projOnScreen[iterNode] == proj) {
+			proj->owner->projOnScreen[iterNode] = nullptr;
+			break;
+		}
+		++iterNode;
+	}
 	destroyCollisionBox(proj->colBox);
 	delete proj;
+	proj = nullptr;
 }
 
 bool exist(projectile* proj){ // proiectilu' face ce stie mai bine
@@ -51,7 +60,6 @@ bool exist(projectile* proj){ // proiectilu' face ce stie mai bine
 			proj->owner->score += 1 * SCORE_UNIT;
 		}
 	}
-	delProjNode(proj->listPos);
 	destroyProjectile(proj);
 	return 0;
 }
