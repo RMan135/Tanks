@@ -22,7 +22,7 @@ extern projectileList projectilesShot;
 
 void destroyProjNode(projectileNode* projNode);
 
-void initProjectileList(projectileList& list);
+void initProjList(projectileList& list);
 void destroyList(projectileList& list);
 
 void addProjNode(projectileNode*& lastNode, projectile* proj);

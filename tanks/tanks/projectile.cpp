@@ -35,7 +35,7 @@ void destroyProjectile(projectile* proj){
 bool exist(projectile* proj){ // proiectilu' face ce stie mai bine
 	proj->pos.x.doubleVal += proj->stepX;
 	proj->pos.y.doubleVal += proj->stepY;
-	if(!checkEnvCollision1Side(proj, 0)){
+	if(!checkEnvCollision(proj)){
 		int i = 0;
 		while(i < MAX_TANK_NUMBER){
 			if(tankVector[i] != proj->owner && tankVector[i] != nullptr)

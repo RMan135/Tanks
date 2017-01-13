@@ -19,7 +19,6 @@ template <class type> collisionBox* createCollisionBox(type* owner);
 void destroyCollisionBox(collisionBox* box);
 
 template <class type1, class type2> bool checkCollision(type1* obj1, type2* obj2);
-template <class type> bool checkEnvCollision1Side(type* obj1, unsigned short); // coliziune cu imprejurarile (nu cu alt tanc)
 template <class type> bool checkEnvCollision(type* obj);
 
 #endif

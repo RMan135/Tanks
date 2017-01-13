@@ -4,18 +4,18 @@
 #include "terrain.h"
 #include <cmath>
 #define RADIAN 0.01745329251
+#define SQRT2 1.41421356
 
 template <class type>
 collisionBox* createCollisionBox(type* owner){
 	collisionBox* box = new collisionBox;
 	box->type = square;
 	box->pos = &owner->pos;
-	box->radius = ((owner->dim.x.doubleVal / 2) + (owner->diagonal / 2)) / 2;
+	box->radius = ((owner->dim.x.doubleVal / 2) + (owner->dim.x.doubleVal * SQRT2 / 2)) / 2;
 	box->dim = &owner->dim;
 	box->rotation = &owner->rotation;
 	return box;
 }
-
 
 void destroyCollisionBox(collisionBox* box){
 	delete box;
