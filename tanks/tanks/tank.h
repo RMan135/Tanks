@@ -22,6 +22,7 @@ enum powerupCode {god, speed, damage, heal, oneshot};
 enum lor {left = -1, right = 1}; // left or right (sens trigonometric sau invers, defapt...)
 enum fob {forward = 1, backward = -1}; // forward or backward
 enum projectileType {light, normal, heavy, explosive};
+enum tankType {recon = 1, general = 2, frontline = 3};
 
 struct tank{
 	collisionBox* colBox;
@@ -45,8 +46,8 @@ extern tank* tankVector[MAX_TANK_NUMBER];
 void addPowerup(tank* tank1, powerupCode what);
 void updatePowerups();
 
-tank* createTank(unsigned int team, double initX, double initY);
-void resetTank(tank* tank1, unsigned int team, double initX, double initY);
+tank* createTank(tankType type, unsigned int team, double initX, double initY);
+void resetTank(tank* tank1, tankType type, unsigned int team, double initX, double initY);
 void destroyTank(tank* tank);
 
 void changeAmmo(tank* tank1, projectileType ammo);

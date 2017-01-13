@@ -9,7 +9,7 @@ projectile* createProjectile(tank* shooter){
 	projectile* shotProj = new projectile;
 	shotProj->owner = shooter;
 	shotProj->damage = (int)(25 + (shooter->ammoType * 15) * shooter->damageMod);
-	shotProj->speed = 0.5 - (shooter->ammoType * 0.075);
+	shotProj->speed = 0.1 - (shooter->ammoType * 0.02);
 	shotProj->oneshot = shooter->powerups[oneshot];
 	if(shooter->powerups[oneshot])
 		--shooter->powerups[oneshot];
@@ -54,7 +54,8 @@ bool exist(projectile* proj){ // proiectilu' face ce stie mai bine
 		}
 		if(i == MAX_TANK_NUMBER)
 			return 1;
-		tankVector[i]->health -= proj->damage;
+		if(tankVector[i]->powerups[god] == 0)
+			tankVector[i]->health -= proj->damage;
 		if(tankVector[i]->health <= 0 || proj->oneshot) {
 			tankVector[i]->alive = 0;
 			proj->owner->score += 1 * SCORE_UNIT;

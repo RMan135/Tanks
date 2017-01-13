@@ -8,7 +8,7 @@
 
 tank* tankVector[MAX_TANK_NUMBER];
 
-tank* createTank(unsigned int team, double initX, double initY){
+tank* createTank(tankType type, unsigned int team, double initX, double initY){
 	tank* ret = nullptr;
 	int i = 0;
 	while(i < MAX_TANK_NUMBER){
@@ -20,7 +20,7 @@ tank* createTank(unsigned int team, double initX, double initY){
 		ret = new tank;
 		tankVector[i] = ret;
 		ret->score = 0;
-		resetTank(ret, team, initX, initY);
+		resetTank(ret, type, team, initX, initY);
 		int iterProjOS = 0;
 		while (iterProjOS < MAX_PROJECTILES_ONSCREEN) {
 			ret->projOnScreen[iterProjOS] = nullptr;
@@ -31,7 +31,7 @@ tank* createTank(unsigned int team, double initX, double initY){
 	return ret;
 }
 
-void resetTank(tank* tank1, unsigned int team, double initX, double initY){
+void resetTank(tank* tank1, tankType type, unsigned int team, double initX, double initY){
 	tank1->team = team;
 	tank1->dim.x.doubleVal = TANK_SIZE;
 	tank1->dim.y.doubleVal = TANK_SIZE;
@@ -40,12 +40,12 @@ void resetTank(tank* tank1, unsigned int team, double initX, double initY){
 	tank1->pos.y.doubleVal = initY + tank1->dim.y.doubleVal / 2;
 	tank1->pos.type = coordType_double;
 	tank1->diagonal = SQRT2 * tank1->dim.x.doubleVal;
-	tank1->maxHealth = 100;
-	tank1->health = 100;
-	tank1->damageMod = 1.0;
-	tank1->speed = 0.1;
+	tank1->maxHealth = 80 + type * 20;
+	tank1->health = tank1->maxHealth;
+	tank1->damageMod = 0.8 + type / 10;
+	tank1->speed = 0.075 + 1 / (type * 20) ;
 	tank1->rotation = 0;
-	tank1->rotationSpeed = 2;
+	tank1->rotationSpeed = 4 - type;
 	tank1->stepX = tank1->speed;
 	tank1->stepY = 0.0;
 	tank1->alive = 1;
