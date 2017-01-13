@@ -58,6 +58,8 @@ void resetTank(tank* tank1, tankType type, unsigned int team, double initX, doub
 	tank1->maxHealth = 80 + type * 20;
 	tank1->health = tank1->maxHealth;
 	tank1->damageMod = 0.8 + type / 10;
+	tank1->nextShot = 0;
+	tank1->cooldown = 350 * type;
 	tank1->speed = 0.075 + 1 / (type * 20) ;
 	tank1->rotation = 0;
 	tank1->rotationSpeed = 4 - type;
@@ -147,6 +149,8 @@ void changeAmmo(tank* tank1, projectileType ammo) {
 }
 
 void shoot(tank* tank1) {
+	if(SDL_GetTicks() < tank1->nextShot)
+		return;
 	projectile* shot = createProjectile(tank1);
 	unsigned int iterProjOS = 0;
 	while (iterProjOS < MAX_PROJECTILES_ONSCREEN) {
@@ -155,6 +159,7 @@ void shoot(tank* tank1) {
 		++iterProjOS;
 	}
 	tank1->projOnScreen[iterProjOS] = shot;
+	tank1->nextShot = SDL_GetTicks() + tank1->cooldown;
 }
 
 void aim(tank* tank1, coords where){
