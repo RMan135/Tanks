@@ -1,10 +1,13 @@
 #include "PowerUp.h"
 
+PowerUp* powerUpVector[MAX_POWERUP_NUMBER];
 
 void PowerUp::setPowerUp(double x, double y, powerupCode t, SDL_Renderer *target, unsigned long long d)
 {
 	pos.x.doubleVal = x;
 	pos.y.doubleVal = y;
+	nextAvail = 0;
+	unavail = 10000;
 	rotation = 0;
 	type = t;
 	duration = d;
@@ -37,11 +40,6 @@ collisionBox* PowerUp::getColBox()
 	return colBox;
 }
 
-unsigned long long PowerUp::getDuration()
-{
-	return duration;
-}
-
 powerupCode PowerUp::getType()
 {
 	return type;
@@ -49,5 +47,6 @@ powerupCode PowerUp::getType()
 
 void PowerUp::show()
 {
-	texture.simpleRender(pos.x.longVal, pos.y.longVal);
+	if(SDL_GetTicks() > nextAvail)
+		texture.simpleRender(pos.x.longVal, pos.y.longVal);
 }

@@ -1,12 +1,27 @@
 #include "tank.h"
 #include "collision.h"
 #include "projectile.h"
+#include "movement.h"
 #include "SDL.h"
 #include <cmath>
 #define RADIAN 0.01745329
 #define SQRT2 1.41421356
 
 tank* tankVector[MAX_TANK_NUMBER];
+
+/*
+short nextPoint = 1,
+endPoint = 1,
+pointCoordsX[200],
+pointCoordsY[200],
+routeLength = 0;
+
+bool reachedNextPoint(double x1, double y1){
+	double x2 = (double)pointCoordsX[nextPoint];
+	double y2 = (double)pointCoordsY[nextPoint];
+	return (sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1)) < 0.2);
+}
+*/
 
 tank* createTank(tankType type, unsigned int team, double initX, double initY){
 	tank* ret = nullptr;
@@ -55,7 +70,7 @@ void resetTank(tank* tank1, tankType type, unsigned int team, double initX, doub
 		tank1->powerups[i] = 0;
 		++i;
 	}
-	addPowerup(tank1, god);
+	addPowerup(tank1, powerupCode::god);
 }
 
 void destroyTank(tank* tank){
@@ -76,8 +91,14 @@ void destroyTank(tank* tank){
 bool move(tank* tank1, fob sense){ // returneaza 0 daca nu poate
 	tank1->pos.x.doubleVal += tank1->stepX * sense;
 	tank1->pos.y.doubleVal += tank1->stepY * sense;
-	if(!checkEnvCollision(tank1)){ //!checkEnvCollision1Side(tank1)
+	if(!checkEnvCollision(tank1)){
 		int i = 0;
+		while (i < MAX_POWERUP_NUMBER) {
+			if (checkCollision(tank1, powerUpVector[i])) {
+				addPowerup(tank1, powerUpVector[i]);
+				//powerUpVector[i]->
+			}
+		}
 		while(i < MAX_TANK_NUMBER){
 			if(tankVector[i] != tank1 && tankVector[i] != nullptr)
 				if(checkCollision(tank1, tankVector[i]))
@@ -124,8 +145,16 @@ void aim(tank* tank1, coords where){
 	tank1->stepY = (double)(sin(tank1->rotation * RADIAN) * tank1->speed);
 }
 
-void addPowerup(tank* tank1, powerupCode what){
-	switch(what){
+void aim(tank* tank1, double wx, double wy) {
+	tank1->rotation = (long long)(atan2(wy - tank1->pos.y.doubleVal, wx - tank1->pos.x.doubleVal) / RADIAN) % 360;
+	tank1->stepX = (double)(cos(tank1->rotation * RADIAN) * tank1->speed);
+	tank1->stepY = (double)(sin(tank1->rotation * RADIAN) * tank1->speed);
+}
+
+void addPowerup(tank* tank1, PowerUp* what){
+	if(SDL_GetTicks() < what->nextAvail)
+		return;
+	switch(what->getType()){
 		case heal:
 		if(tank1->health == 0.5 * tank1->maxHealth)
 			tank1->health = tank1->maxHealth;
@@ -140,8 +169,29 @@ void addPowerup(tank* tank1, powerupCode what){
 		tank1->powerups[oneshot] += 3;
 		break;
 	}
-	tank1->powerups[what] = SDL_GetTicks() + 2500 * what;
+	tank1->powerups[what->getType()] = SDL_GetTicks() + what->duration;
+	what->nextAvail = SDL_GetTicks() + what->unavail;
 }
+
+void addPowerup(tank* tank1, powerupCode what) {
+	switch (what) {
+	case heal:
+		if (tank1->health == 0.5 * tank1->maxHealth)
+			tank1->health = tank1->maxHealth;
+		else tank1->health += 0.5 * tank1->maxHealth;
+		break;
+
+	case damage:
+		tank1->damageMod = 2 * tank1->damageMod;
+		break;
+
+	case oneshot:
+		tank1->powerups[oneshot] += 3;
+		break;
+	}
+	tank1->powerups[what] = SDL_GetTicks() + 2500;
+}
+
 
 void updatePowerups(){
 	unsigned long long curTicks = SDL_GetTicks();
@@ -180,3 +230,27 @@ void updatePowerups(){
 		}
 	}
 }
+
+/*
+void act(tank* tank1) {
+	if (nextPoint > endPoint)
+	{
+		nextPoint = 1;
+		route(tank1->pos.x.doubleVal, tank1->pos.y.doubleVal, tankVector[0]->pos.x.doubleVal, tankVector[0]->pos.x.doubleVal,
+			pointCoordsX, pointCoordsY, routeLength);
+	}
+
+	if (canFire(tank1->pos.x.doubleVal, tank1->pos.y.doubleVal, tankVector[0]->pos.x.doubleVal, tankVector[0]->pos.x.doubleVal))
+	{
+		aim(tank1, tankVector[0]->pos);
+		shoot(tank1);
+	}
+	else
+	{
+		aim(tank1, pointCoordsX[nextPoint], pointCoordsY[nextPoint]);
+		move(tank1, fob::forward);
+		if (reachedNextPoint(tank1->pos.x.doubleVal, tank1->pos.x.doubleVal))
+			nextPoint++;
+	}
+}
+*/

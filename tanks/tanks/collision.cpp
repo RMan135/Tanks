@@ -53,6 +53,8 @@ template collisionBox* createCollisionBox<projectile>(projectile*);
 template collisionBox* createCollisionBox<PowerUp>(PowerUp*);
 template bool checkCollision<tank, tank>(tank*, tank*);
 template bool checkCollision<tank, projectile>(tank*, projectile*);
+template bool checkCollision<PowerUp, tank>(PowerUp*, tank*);
+template bool checkCollision<tank, PowerUp>(tank*, PowerUp*);
 template bool checkCollision<projectile, tank>(projectile*, tank*);
 template bool checkEnvCollision<tank>(tank* obj);
 template bool checkEnvCollision<projectile>(projectile* obj);

@@ -3,6 +3,8 @@
 #include "collision.h"
 #include "Texture.h"
 
+#define MAX_POWERUP_NUMBER 4
+
 enum powerupCode { god, speed, damage, heal, oneshot };
 
 class PowerUp
@@ -10,7 +12,6 @@ class PowerUp
 private:
 	
 	powerupCode type;
-	unsigned long long duration;
 	SDL_Renderer *renderTarget;
 	Texture texture;
 
@@ -19,11 +20,12 @@ public:
 	coords pos, dim;
 	collisionBox *colBox;
 	unsigned int rotation;
+	unsigned long long duration, nextAvail, unavail;
 
 	void setPowerUp(double x, double y, powerupCode t, SDL_Renderer *target, unsigned long long d = 5000);
 	collisionBox* getColBox();
-	unsigned long long getDuration();
 	powerupCode getType();
 	void show();
 };
 
+extern PowerUp* powerUpVector[MAX_POWERUP_NUMBER];

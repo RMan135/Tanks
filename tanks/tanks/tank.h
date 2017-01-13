@@ -43,6 +43,7 @@ struct tank{
 
 extern tank* tankVector[MAX_TANK_NUMBER];
 
+void addPowerup(tank* tank1, PowerUp* what);
 void addPowerup(tank* tank1, powerupCode what);
 void updatePowerups();
 
@@ -55,6 +56,7 @@ bool move(tank* tank1, fob sense); // returneaza 0 daca nu poate
 bool turn(tank* tank1, lor direction);
 void shoot(tank* tank1);
 void aim(tank* tank1, coords where);
+void aim(tank* tank1, double wx, double wy);
 void act(tank* tank1); // AIu'; functia apelata in fiecare frame, pentru
 					// fiecare tank
 

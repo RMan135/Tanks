@@ -20,15 +20,11 @@ void coordToLong(coords& pos){ // converteste coordonatele la long
 
 template <class type>
 unsigned long long getLongX(type* tank1){
-	if (tank1->pos.type == coordType_long)
-		return tank1->pos.x.longVal ;
 	return (long)((tank1->pos.x.doubleVal - tank1->dim.x.doubleVal / 2) * TILE_WIDTH);
 }
 
 template <class type>
 unsigned long long getLongY(type* tank1) {
-	if (tank1->pos.type == coordType_long)
-		return tank1->pos.x.longVal;
 	return (long)((tank1->pos.y.doubleVal - tank1->dim.y.doubleVal / 2) * TILE_HEIGHT);
 }
 
