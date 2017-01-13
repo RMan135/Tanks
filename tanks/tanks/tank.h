@@ -8,15 +8,16 @@
 #define POWERUP_NUMBER 5
 #define TIMED_POWERUPS 3
 #define MAX_TANK_NUMBER 4
+#define SCORE_UNIT 1000
 
-#define TANK_SIZE 32
+#define TANK_SIZE 1.33333333
 
 #include "coord.h"
 
 struct collisionBox;
 
 enum powerupCode {god, speed, damage, heal, oneshot};
-enum lor {left = 1, right = -1}; // left or right
+enum lor {left = -1, right = 1}; // left or right (sens trigonometric sau invers, defapt...)
 enum fob {forward = 1, backward = -1}; // forward or backward
 enum projectileType {light, normal, heavy, explosive};
 
@@ -31,8 +32,9 @@ struct tank{
 	coords pos, dim;
 	double diagonal;
 	double stepX, stepY;
-	unsigned int rotation, turretRotation;
+	unsigned int rotation, rotationSpeed;
 	bool alive;
+	unsigned int score;
 };
 
 extern tank* tankVector[MAX_TANK_NUMBER];

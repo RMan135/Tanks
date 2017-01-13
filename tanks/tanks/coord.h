@@ -5,6 +5,8 @@
 #ifndef COORD_HEADER
 #define COORD_HEADER
 
+struct tank;
+
 union doublong{
 	double doubleVal;
 	long long longVal;
@@ -19,5 +21,7 @@ struct coords{
 
 void coordToDouble(coords& pos); // converteste coordonatele la double
 void coordToLong(coords& pos); // converteste coordonatele la long
+unsigned long long getLongX(tank* tank1);
+unsigned long long getLongY(tank* tank1);
 
 #endif

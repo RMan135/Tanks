@@ -16,8 +16,10 @@ projectile* createProjectile(tank* shooter){
 		--shooter->powerups[oneshot];
 	shotProj->pos.x.doubleVal = shooter->pos.x.doubleVal;
 	shotProj->pos.y.doubleVal = shooter->pos.y.doubleVal;
+	shotProj->pos.type = shooter->pos.type;
 	shotProj->dim.x.doubleVal = PROJECTILE_SIZE;
 	shotProj->dim.y.doubleVal = PROJECTILE_SIZE;
+	shotProj->dim.type = shooter->pos.type;
 	shotProj->diagonal = shotProj->dim.x.doubleVal * SQRT2;
 	shotProj->rotation = shooter->rotation;
 	shotProj->stepX = sin((shotProj->rotation % 360) * RADIAN) * speed;
@@ -33,7 +35,7 @@ void destroyProjectile(projectile* proj){
 bool exist(projectile* proj){ // proiectilu' face ce stie mai bine
 	proj->pos.x.doubleVal += proj->stepX;
 	proj->pos.y.doubleVal += proj->stepY;
-	if(!checkEnvCollision(proj)){
+	if(!checkEnvCollision1Side(proj, 0)){
 		int i = 0;
 		while(i < MAX_TANK_NUMBER){
 			if(tankVector[i] != proj->owner && tankVector[i] != nullptr)
@@ -44,8 +46,10 @@ bool exist(projectile* proj){ // proiectilu' face ce stie mai bine
 		if(i == MAX_TANK_NUMBER)
 			return 1;
 		tankVector[i]->health -= proj->damage;
-		if(tankVector[i]->health <= 0 || proj->oneshot)
+		if(tankVector[i]->health <= 0 || proj->oneshot) {
 			tankVector[i]->alive = 0;
+			proj->owner->score += 1 * SCORE_UNIT;
+		}
 	}
 	delProjNode(proj->listPos);
 	destroyProjectile(proj);

@@ -20,6 +20,7 @@ tank* createTank(unsigned int team, double initX, double initY){
 	if(i != MAX_TANK_NUMBER){
 		ret = new tank;
 		tankVector[i] = ret;
+		ret->score = 0;
 		resetTank(ret, team, initX, initY);
 		ret->colBox = createCollisionBox(ret);
 	}
@@ -28,18 +29,20 @@ tank* createTank(unsigned int team, double initX, double initY){
 
 void resetTank(tank* tank1, unsigned int team, double initX, double initY){
 	tank1->team = team;
-	tank1->pos.x.doubleVal = initX;
-	tank1->pos.y.doubleVal = initY;
 	tank1->dim.x.doubleVal = TANK_SIZE;
 	tank1->dim.y.doubleVal = TANK_SIZE;
+	tank1->dim.type = coordType_double;
+	tank1->pos.x.doubleVal = initX + tank1->dim.x.doubleVal / 2;
+	tank1->pos.y.doubleVal = initY + tank1->dim.y.doubleVal / 2;
+	tank1->pos.type = coordType_double;
 	tank1->diagonal = SQRT2 * tank1->dim.x.doubleVal;
 	tank1->maxHealth = 100;
 	tank1->health = 100;
 	tank1->damageMod = 1.0;
 	tank1->speed = 0.1;
 	tank1->rotation = 0;
-	tank1->turretRotation = 0;
-	tank1->stepX = speed;
+	tank1->rotationSpeed = 2;
+	tank1->stepX = tank1->speed;
 	tank1->stepY = 0.0;
 	tank1->alive = 1;
 
@@ -67,9 +70,9 @@ void destroyTank(tank* tank){
 }
 
 bool move(tank* tank1, fob sense){ // returneaza 0 daca nu poate
-	tank1->pos.x.doubleVal += tank1->stepX;
-	tank1->pos.y.doubleVal += tank1->stepY;
-	if(!checkEnvCollision(tank1)){
+	tank1->pos.x.doubleVal += tank1->stepX * sense;
+	tank1->pos.y.doubleVal += tank1->stepY * sense;
+	if(!checkEnvCollision(tank1)){ //!checkEnvCollision1Side(tank1)
 		int i = 0;
 		while(i < MAX_TANK_NUMBER){
 			if(tankVector[i] != tank1 && tankVector[i] != nullptr)
@@ -78,17 +81,21 @@ bool move(tank* tank1, fob sense){ // returneaza 0 daca nu poate
 			++i;
 		}
 		if(i == MAX_TANK_NUMBER)
-			return 1;
+			return 1;        
 	}
-	tank1->pos.x.doubleVal -= tank1->stepX;
-	tank1->pos.y.doubleVal += tank1->stepY;
+	tank1->pos.x.doubleVal -= tank1->stepX * sense;
+	tank1->pos.y.doubleVal -= tank1->stepY * sense;
 	return 0;
 }
 
 bool turn(tank* tank1, lor direction){
-	if(!checkEnvCollision(tank1)){
+	tank1->rotation = (360 + tank1->rotation + tank1->rotationSpeed * direction) % 360;
+	if(checkEnvCollision(tank1)){ //checkEnvCollision2Side(tank1)
+		tank1->rotation = (360 + tank1->rotation - tank1->rotationSpeed * direction) % 360;
 		return 0;
 	}
+	tank1->stepX = (double)(cos(tank1->rotation * RADIAN) * tank1->speed);
+	tank1->stepY = (double)(sin(tank1->rotation * RADIAN) * tank1->speed);
 	return 1;
 }
 
@@ -100,7 +107,7 @@ void shoot(tank* tank1){
 void aim(tank* tank1, coords where){
 	double m = (where.x.doubleVal - tank1->pos.x.doubleVal) / 
 				(where.y.doubleVal - tank1->pos.y.doubleVal);
-	tank1->turretRotation = atan(m) / RADIAN;
+	tank1->rotation = atan(m) / RADIAN;
 }
 
 void addPowerup(tank* tank1, powerupCode what){
@@ -119,7 +126,6 @@ void addPowerup(tank* tank1, powerupCode what){
 		tank1->powerups[oneshot] += 3;
 		break;
 	}
-
 	tank1->powerups[what] = SDL_GetTicks() + 2500 * what;
 }
 

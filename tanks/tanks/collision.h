@@ -5,7 +5,6 @@
 #ifndef COLLISIONBOX_HEADER
 #define COLLISIONBOX_HEADER
 
-
 struct coords;
 enum collisionType {square, circle};
 
@@ -19,11 +18,8 @@ struct collisionBox{
 template <class type> collisionBox* createCollisionBox(type* owner);
 void destroyCollisionBox(collisionBox* box);
 
-template <class type1, class type2> bool checkCollision(type1* box1, type2* box2);
-template <class type> bool checkEnvCollision(type* box1); // coliziune cu imprejurarile (nu cu alt tanc)
-bool checkEnvCollisionAcF(collisionBox* box1);
-bool checkEnvCollisionAcB(collisionBox* box1);
-bool checkEnvCollisionTnL(collisionBox* box1);
-bool checkEnvCollisionTnR(collisionBox* box1);
+template <class type1, class type2> bool checkCollision(type1* obj1, type2* obj2);
+template <class type> bool checkEnvCollision1Side(type* obj1, unsigned short); // coliziune cu imprejurarile (nu cu alt tanc)
+template <class type> bool checkEnvCollision(type* obj);
 
 #endif
