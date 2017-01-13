@@ -9,7 +9,6 @@
 
 tank* tankVector[MAX_TANK_NUMBER];
 
-/*
 short nextPoint = 1,
 endPoint = 1,
 pointCoordsX[200],
@@ -21,7 +20,7 @@ bool reachedNextPoint(double x1, double y1){
 	double y2 = (double)pointCoordsY[nextPoint];
 	return (sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1)) < 0.2);
 }
-*/
+
 
 tank* createTank(tankType type, unsigned int team, double initX, double initY){
 	tank* ret = nullptr;
@@ -113,12 +112,6 @@ bool move(tank* tank1, fob sense){ // returneaza 0 daca nu poate
 	tank1->pos.y.doubleVal += tank1->stepY * sense;
 	if(!checkEnvCollision(tank1)){
 		int i = 0;
-		while (i < MAX_POWERUP_NUMBER) {
-			if (checkCollision(tank1, powerUpVector[i])) {
-				addPowerup(tank1, powerUpVector[i]);
-				//powerUpVector[i]->
-			}
-		}
 		while(i < MAX_TANK_NUMBER){
 			if(tankVector[i] != tank1 && tankVector[i] != nullptr)
 				if(checkCollision(tank1, tankVector[i]))
@@ -254,7 +247,7 @@ void updatePowerups(){
 	}
 }
 
-/*
+
 void act(tank* tank1) {
 	if (nextPoint > endPoint)
 	{
@@ -276,4 +269,3 @@ void act(tank* tank1) {
 			nextPoint++;
 	}
 }
-*/
