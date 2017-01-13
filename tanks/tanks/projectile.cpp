@@ -9,7 +9,7 @@ projectile* createProjectile(tank* shooter){
 	projectile* shotProj = new projectile;
 	shotProj->owner = shooter;
 	shotProj->damage = (int)(25 + (shooter->ammoType * 15) * shooter->damageMod);
-	shotProj->speed = 0.01 - (shooter->ammoType * 0.02);
+	shotProj->speed = 0.1 - (double)(shooter->ammoType * 0.02);
 	shotProj->oneshot = shooter->powerups[oneshot];
 	if(shooter->powerups[oneshot])
 		--shooter->powerups[oneshot];
@@ -21,8 +21,8 @@ projectile* createProjectile(tank* shooter){
 	shotProj->dim.type = shooter->pos.type;
 	shotProj->diagonal = shotProj->dim.x.doubleVal * SQRT2;
 	shotProj->rotation = shooter->rotation;
-	shotProj->stepX = sin((shotProj->rotation % 360) * RADIAN) * speed;
-	shotProj->stepY = cos((shotProj->rotation % 360) * RADIAN) * speed;
+	shotProj->stepX = (double)(cos((shotProj->rotation % 360) * RADIAN) * 0.3);
+	shotProj->stepY = (double)(sin((shotProj->rotation % 360) * RADIAN) * 0.3);
 	shotProj->colBox = createCollisionBox(shotProj);
 	return shotProj;
 }
