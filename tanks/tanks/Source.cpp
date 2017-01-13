@@ -35,7 +35,7 @@ int i;
 
 Texture tankTexture, bullet;
 void spawnTanks();
-int coutAliveTanks();
+int countAliveTanks();
 
 void addHuman();
 void addEnemy();
@@ -128,8 +128,9 @@ int main(int argc, char* args[])
 
 		if (gameState == PLAYING)
 		{
-			if (coutAliveTanks() == 1)
+			if (countAliveTanks() == 0)
 			{
+				SDL_Delay(3000);
 				changeGameState(GAME_OVER);
 			}
 			showMap();
@@ -139,6 +140,8 @@ int main(int argc, char* args[])
 				{
 					pController[i].update();
 				}
+				else
+					act(tankVector[i]);
 				if (tankVector[i]->alive)
 				{
 					SDL_Rect hpBar = { getLongX(tankVector[i]) - 3, getLongY(tankVector[i]) - 12, tankVector[i]->health/3, 3 };
@@ -158,7 +161,7 @@ int main(int argc, char* args[])
 				while (j < MAX_PROJECTILES_ONSCREEN) {
 					if (tankVector[i]->projOnScreen[j] != nullptr)
 					{
-						bullet.render(getLongX(tankVector[i]->projOnScreen[j]), getLongY(tankVector[i]->projOnScreen[j]), tankVector[i]->projOnScreen[j]->rotation);
+						bullet.render(getLongX(tankVector[i]->projOnScreen[j]) + 64 , getLongY(tankVector[i]->projOnScreen[j])  + 64 , tankVector[i]->projOnScreen[j]->rotation);
 					}
 					j++;
 				}
@@ -526,10 +529,10 @@ void displayDifficulty(int x, int y, int n, int scale)
 	}
 }
 
-int coutAliveTanks()
+int countAliveTanks()
 {
 	int i, num = 0;
-	for (i = 0; i < numberOfEnemies + numberOfHumans; i++)
+	for (i = 0; i < numberOfHumans; i++)
 	{
 		if (tankVector[i]->alive)
 			num++;
