@@ -58,6 +58,8 @@ bool canFire(double x1, double y1, double x2, double y2)
 
 void getClosestReachableTile (short &x, short &y)
 {
+    if (canReach[x][y] >= 2) return;
+
     short coordNextX[] = {0, 1, 0, -1, -1, -1, 1, 1},
           coordNextY[] = {1, 0, -1, 0, 1, -1, 1, -1};
 
@@ -70,7 +72,7 @@ void getClosestReachableTile (short &x, short &y)
         }
 }
 
-short route(short x1, short y1, short x2, short y2, short movX[200], short movY[200])
+short route(short x1, short y1, short x2, short y2, short movX[200], short movY[200], short &routeLength)
 {
     bool reachedEnd = 0;
     short qEnd = 0, qPos = 0, k, i, j, length,
@@ -142,6 +144,7 @@ short route(short x1, short y1, short x2, short y2, short movX[200], short movY[
 
     movX[1] = x1;
     movY[1] = y1;
+    routeLength = length;
 
     /*
     cout << endl;
