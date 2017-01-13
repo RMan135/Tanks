@@ -28,4 +28,4 @@ public:
 	void show();
 };
 
-extern PowerUp* powerUpVector[MAX_POWERUP_NUMBER];
+//PowerUp* powerUpVector[MAX_POWERUP_NUMBER];

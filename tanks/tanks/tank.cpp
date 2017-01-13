@@ -113,12 +113,13 @@ bool move(tank* tank1, fob sense){ // returneaza 0 daca nu poate
 	tank1->pos.y.doubleVal += tank1->stepY * sense;
 	if(!checkEnvCollision(tank1)){
 		int i = 0;
+		/*
 		while (i < MAX_POWERUP_NUMBER) {
 			if (checkCollision(tank1, powerUpVector[i])) {
 				addPowerup(tank1, powerUpVector[i]);
 				//powerUpVector[i]->
 			}
-		}
+		}*/
 		while(i < MAX_TANK_NUMBER){
 			if(tankVector[i] != tank1 && tankVector[i] != nullptr)
 				if(checkCollision(tank1, tankVector[i]))

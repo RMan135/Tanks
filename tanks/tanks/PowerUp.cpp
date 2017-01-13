@@ -1,6 +1,6 @@
 #include "PowerUp.h"
 
-PowerUp* powerUpVector[MAX_POWERUP_NUMBER];
+//PowerUp* powerUpVector[MAX_POWERUP_NUMBER];
 
 void PowerUp::setPowerUp(double x, double y, powerupCode t, SDL_Renderer *target, unsigned long long d)
 {

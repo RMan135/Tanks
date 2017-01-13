@@ -423,7 +423,7 @@ void spawnTanks()
 	int i;
 	for (i = 0; i < numberOfHumans; i++)
 	{
-		tankVector[i] = createTank(general , i, playerSpawners[i].x.doubleVal, playerSpawners[i].y.doubleVal);
+		tankVector[i] = createTank(general , i, playerSpawners[i].x.doubleVal - 0.5, playerSpawners[i].y.doubleVal - 0.5);
 		pController[i].addTank(tankVector[i]);
 		switch (i)
 		{
@@ -437,7 +437,7 @@ void spawnTanks()
 	}
 	for (i = numberOfHumans; i < numberOfEnemies + numberOfHumans; i++)
 	{
-		tankVector[i] = createTank(general, i, playerSpawners[i].x.doubleVal, playerSpawners[i].y.doubleVal);
+		tankVector[i] = createTank(general, i, playerSpawners[i].x.doubleVal -0.5, playerSpawners[i].y.doubleVal -0.5);
 		pController[i].ownedTank = NULL;
 	}
 	cout << "Spawned tanks." << endl;
