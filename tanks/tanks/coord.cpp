@@ -1,6 +1,7 @@
 #include "coord.h"
 #include "tank.h"
 #include "projectile.h"
+#include "PowerUp.h"
 
 #define TILE_WIDTH 24
 #define TILE_HEIGHT 24
@@ -35,3 +36,5 @@ template unsigned long long getLongX<tank>(tank*);
 template unsigned long long getLongY<tank>(tank*);
 template unsigned long long getLongX<projectile>(projectile*);
 template unsigned long long getLongY<projectile>(projectile*);
+template unsigned long long getLongX<PowerUp>(PowerUp*);
+template unsigned long long getLongY<PowerUp>(PowerUp*);
