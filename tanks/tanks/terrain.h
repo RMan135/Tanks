@@ -18,8 +18,8 @@ struct matrix
 
 extern matrix collisionMap;
 extern matrix accessibleTiles;
-extern short canReach[][];
-extern short isSpawnPoint[][];
+extern short canReach[MAX_TILES_WIDTH][MAX_TILES_HEIGHT];
+extern short isSpawnPoint[MAX_TILES_WIDTH][MAX_TILES_HEIGHT];
 
 extern short mapTheme,
              noOfPlayers;

@@ -14,11 +14,11 @@
 #define TANK_SIZE 1.33333333
 
 #include "coord.h"
+#include "PowerUp.h"
 
 struct collisionBox;
 struct projectile;
 
-enum powerupCode {god, speed, damage, heal, oneshot};
 enum lor {left = -1, right = 1}; // left or right (sens trigonometric sau invers, defapt...)
 enum fob {forward = 1, backward = -1}; // forward or backward
 enum projectileType {light, normal, heavy, explosive};

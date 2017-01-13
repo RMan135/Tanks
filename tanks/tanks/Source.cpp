@@ -30,11 +30,11 @@ int numberOfEnemies;
 int difficulty;
 
 PlayerController pController[2];
-int currentSpawnPoint;
+int i;
 
-tank* tanks[4];
 Texture tankTexture;
 void spawnTanks();
+int coutAliveTanks();
 
 void addHuman();
 void addEnemy();
@@ -107,8 +107,6 @@ int main(int argc, char* args[])
 
 	currentTileset.loadTileset("cave", RENDER_TARGET);
 	nextMap();
-	pController[0].setPlayerOne();
-	pController[1].setPlayerTwo();
 	tankTexture.setRenderTarget(RENDER_TARGET);
 	tankTexture.loadTexture("media/tank.png");
 	
@@ -125,22 +123,26 @@ int main(int argc, char* args[])
 		// Handle events
 		handleEvents();
 
-
 		if (gameState == PLAYING)
 		{
+			if (coutAliveTanks() == 1)
+			{
+				changeGameState(GAME_OVER);
+			}
 			showMap();
 			for (int i = 0; i < numberOfEnemies + numberOfHumans; i++)
 			{
-				pController[i].update();
-				if (tanks[i]->alive)
+				if (i < numberOfHumans)
 				{
-					tankTexture.render(getLongX(tanks[i]), getLongY(tanks[i]), tanks[i]->rotation);
-					SDL_SetRenderDrawColor(RENDER_TARGET, 255, 0, 0, 255);
-					SDL_Rect rect = { 0, 0, getLongX(tanks[i]), getLongY(tanks[i]) };
-					SDL_RenderDrawRect(RENDER_TARGET, &rect);
+					pController[i].update();
+				}
+				if (tankVector[i]->alive)
+				{
+					tankTexture.render(getLongX(tankVector[i]), getLongY(tankVector[i]), tankVector[i]->rotation);
 				}
 			}
 		}
+
 		if(gameState == GAME_SETUP || gameState == MAP_SELECTION || gameState == GENERATE || gameState == LOAD)
 			previewMap(SCREEN_WIDTH / 2 - 64, SCREEN_HEIGHT / 4, 12);
 		menus[gameState].show();
@@ -194,9 +196,7 @@ void resetValues()
 	numberOfHumans = 1;
 	numberOfEnemies = 1;
 	difficulty = 1;
-
-	int currentSpawnPoint = 0;
-	
+		
 	int currentMap = -1;
 	nextMap();
 }
@@ -400,14 +400,25 @@ void randomMap()
 
 void spawnTanks()
 {
-	for (currentSpawnPoint = 0; currentSpawnPoint < numberOfHumans; currentSpawnPoint++)
+	int i;
+	for (i = 0; i < numberOfHumans; i++)
 	{
-		tanks[currentSpawnPoint] = createTank(currentSpawnPoint, playerSpawners[currentSpawnPoint].x.doubleVal, playerSpawners[currentSpawnPoint].y.doubleVal);
-		pController[currentSpawnPoint].addTank(tanks[currentSpawnPoint]);
+		tankVector[i] = createTank(general , i, playerSpawners[i].x.doubleVal, playerSpawners[i].y.doubleVal);
+		pController[i].addTank(tankVector[i]);
+		switch (i)
+		{
+		case 0:
+			pController[i].setPlayerOne();
+			break;
+		case 1:
+			pController[i].setPlayerTwo();
+			break;
+		}
 	}
-	for (currentSpawnPoint = numberOfHumans; currentSpawnPoint < numberOfEnemies + numberOfHumans; currentSpawnPoint++)
+	for (i = numberOfHumans; i < numberOfEnemies + numberOfHumans; i++)
 	{
-		tanks[currentSpawnPoint] = createTank(currentSpawnPoint, playerSpawners[currentSpawnPoint].x.doubleVal, playerSpawners[currentSpawnPoint].y.doubleVal);
+		tankVector[i] = createTank(general, i, playerSpawners[i].x.doubleVal, playerSpawners[i].y.doubleVal);
+		pController[i].ownedTank = NULL;
 	}
 	cout << "Spawned tanks." << endl;
 }
@@ -492,3 +503,13 @@ void displayDifficulty(int x, int y, int n, int scale)
 	}
 }
 
+int coutAliveTanks()
+{
+	int i, num = 0;
+	for (i = 0; i < numberOfEnemies + numberOfHumans; i++)
+	{
+		if (tankVector[i]->alive)
+			num++;
+	}
+	return num;
+}

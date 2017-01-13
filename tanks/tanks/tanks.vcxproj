@@ -138,6 +138,7 @@
     <ClInclude Include="collision.h" />
     <ClInclude Include="coord.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="PlayerController.h" />
     <ClInclude Include="PowerUp.h" />
     <ClInclude Include="projectile.h" />
     <ClInclude Include="projectilelist.h" />

@@ -4,8 +4,8 @@
 
 struct PlayerController
 {
-	bool fwd, bkd, left, right;
-	SDL_Keycode btFwd, btBkd, btLeft, btRight;
+	bool fwd, bkd, left, right, fire;
+	SDL_Keycode btFwd, btBkd, btLeft, btRight, btFire;
 	tank* ownedTank;
 
 	void keyDown(SDL_Keycode key)
@@ -25,6 +25,10 @@ struct PlayerController
 		if (key == btRight)
 		{
 			right = 1;
+		}
+		if (key == btFire)
+		{
+			fire = 1;
 		}
 	}
 
@@ -46,6 +50,10 @@ struct PlayerController
 		{
 			right = 0;
 		}
+		if (key == btFire)
+		{
+			fire = 0;
+		}
 	}
 
 	void update()
@@ -53,11 +61,13 @@ struct PlayerController
 		if (fwd && !bkd)
 			move(ownedTank, (fob)1);
 		if (bkd && !fwd)
-			move(ownedTank, (fob)0);
-		if (left && !right)
+			move(ownedTank, (fob)-1);
+		if (!left && right)
 			turn(ownedTank, (lor)1);
-		if (right && !left)
-			turn(ownedTank, (lor)0);
+		if (!right && left)
+			turn(ownedTank, (lor)-1);
+		if (fire)
+			shoot(ownedTank);
 	}
 
 	void setPlayerOne()
@@ -66,14 +76,16 @@ struct PlayerController
 		btBkd = SDLK_s;
 		btLeft = SDLK_a;
 		btRight = SDLK_d;
+		btFire = SDLK_SPACE;
 	}
 
 	void setPlayerTwo()
 	{
-		btFwd = SDLK_UP;
-		btBkd = SDLK_DOWN;
-		btLeft = SDLK_LEFT;
-		btRight = SDLK_RIGHT;
+		btFwd = SDLK_KP_8;
+		btBkd = SDLK_KP_5;
+		btLeft = SDLK_KP_4;
+		btRight = SDLK_KP_6;
+		btFire = SDLK_KP_0;
 	}
 
 	void addTank(tank *t)

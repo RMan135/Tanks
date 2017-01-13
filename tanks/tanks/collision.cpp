@@ -2,6 +2,7 @@
 #include "tank.h"
 #include "projectile.h"
 #include "terrain.h"
+#include "PowerUp.h"
 #include <cmath>
 #define RADIAN 0.01745329251
 #define SQRT2 1.41421356
@@ -49,6 +50,7 @@ bool checkEnvCollision(type* obj) {
 
 template collisionBox* createCollisionBox<tank>(tank*);
 template collisionBox* createCollisionBox<projectile>(projectile*);
+template collisionBox* createCollisionBox<PowerUp>(PowerUp*);
 template bool checkCollision<tank, tank>(tank*, tank*);
 template bool checkCollision<tank, projectile>(tank*, projectile*);
 template bool checkCollision<projectile, tank>(projectile*, tank*);

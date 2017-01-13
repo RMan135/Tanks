@@ -1,3 +1,4 @@
-﻿  PowerUp.cpp
-  tanks.vcxproj -> C:\Users\Razvan\Documents\C++\project-ip\tanks\Debug\tanks.exe
-  tanks.vcxproj -> C:\Users\Razvan\Documents\C++\project-ip\tanks\Debug\tanks.pdb (Partial PDB)
+﻿  Source.cpp
+f:\~workspace\tanks\tanks\tanks\source.cpp(141): warning C4244: 'argument': conversion from 'unsigned __int64' to 'int', possible loss of data
+  tanks.vcxproj -> F:\~WORKSPACE\tanks\tanks\Debug\tanks.exe
+  tanks.vcxproj -> F:\~WORKSPACE\tanks\tanks\Debug\tanks.pdb (Partial PDB)
