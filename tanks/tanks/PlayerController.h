@@ -1,10 +1,12 @@
 #pragma once
 #include <SDL.h>
+#include "tank.h"
 
 struct PlayerController
 {
 	bool fwd, bkd, left, right;
 	SDL_Keycode btFwd, btBkd, btLeft, btRight;
+	tank* ownedTank;
 
 	void keyDown(SDL_Keycode key)
 	{
@@ -46,6 +48,18 @@ struct PlayerController
 		}
 	}
 
+	void update()
+	{
+		if (fwd && !bkd)
+			move(ownedTank, (fob)1);
+		if (bkd && !fwd)
+			move(ownedTank, (fob)0);
+		if (left && !right)
+			turn(ownedTank, (lor)1);
+		if (right && !left)
+			turn(ownedTank, (lor)0);
+	}
+
 	void setPlayerOne()
 	{
 		btFwd = SDLK_w;
@@ -60,6 +74,16 @@ struct PlayerController
 		btBkd = SDLK_DOWN;
 		btLeft = SDLK_LEFT;
 		btRight = SDLK_RIGHT;
+	}
+
+	void addTank(tank *t)
+	{
+		ownedTank = t;
+	}
+
+	tank* getTank()
+	{
+		return ownedTank;
 	}
 };
 
