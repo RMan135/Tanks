@@ -22,7 +22,7 @@ extern short canReach[][];
 extern short isSpawnPoint[][];
 
 extern short mapTheme,
-             noOfPlayers = 4;
+             noOfPlayers;
 
 /*
 0 - empty
