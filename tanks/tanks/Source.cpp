@@ -10,6 +10,7 @@
 #include "terrainGeneration.h"
 #include "coord.h"
 #include "tank.h"
+#include "projectile.h"
 using namespace std;
 
 #define SCREEN_WIDTH 768
@@ -32,7 +33,7 @@ int difficulty;
 PlayerController pController[2];
 int i;
 
-Texture tankTexture;
+Texture tankTexture, bullet;
 void spawnTanks();
 int coutAliveTanks();
 
@@ -109,6 +110,8 @@ int main(int argc, char* args[])
 	nextMap();
 	tankTexture.setRenderTarget(RENDER_TARGET);
 	tankTexture.loadTexture("media/tank.png");
+	bullet.setRenderTarget(RENDER_TARGET);
+	bullet.loadTexture("media/bullet.png");
 	
 
 	while (running)
@@ -140,6 +143,22 @@ int main(int argc, char* args[])
 				{
 					tankTexture.render(getLongX(tankVector[i]), getLongY(tankVector[i]), tankVector[i]->rotation);
 				}
+				int j = 0;
+				while (j < MAX_PROJECTILES_ONSCREEN) {
+					if (tankVector[i]->projOnScreen[j] != nullptr)
+					{
+						exist(tankVector[i]->projOnScreen[j]);
+					}
+					j++;
+				}
+				j = 0;
+				while (j < MAX_PROJECTILES_ONSCREEN) {
+					if (tankVector[i]->projOnScreen[j] != nullptr)
+					{
+						bullet.render(getLongX(tankVector[i]->projOnScreen[j]), getLongY(tankVector[i]->projOnScreen[j]), tankVector[i]->projOnScreen[j]->rotation);
+					}
+					j++;
+				}
 			}
 		}
 
@@ -169,6 +188,7 @@ int main(int argc, char* args[])
 	SDL_Quit();
 	return 0;
 }
+
 void init()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);

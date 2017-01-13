@@ -1,4 +1,5 @@
 ﻿  Source.cpp
-f:\~workspace\tanks\tanks\tanks\source.cpp(141): warning C4244: 'argument': conversion from 'unsigned __int64' to 'int', possible loss of data
+f:\~workspace\tanks\tanks\tanks\source.cpp(144): warning C4244: 'argument': conversion from 'unsigned __int64' to 'int', possible loss of data
+f:\~workspace\tanks\tanks\tanks\source.cpp(158): warning C4244: 'argument': conversion from 'unsigned __int64' to 'int', possible loss of data
   tanks.vcxproj -> F:\~WORKSPACE\tanks\tanks\Debug\tanks.exe
   tanks.vcxproj -> F:\~WORKSPACE\tanks\tanks\Debug\tanks.pdb (Partial PDB)
