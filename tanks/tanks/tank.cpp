@@ -1,7 +1,6 @@
 #include "tank.h"
 #include "collision.h"
 #include "projectile.h"
-#include "projectilelist.h"
 #include "SDL.h"
 #include <cmath>
 #define RADIAN 0.01745329
@@ -22,6 +21,11 @@ tank* createTank(unsigned int team, double initX, double initY){
 		tankVector[i] = ret;
 		ret->score = 0;
 		resetTank(ret, team, initX, initY);
+		int iterProjOS = 0;
+		while (iterProjOS < MAX_PROJECTILES_ONSCREEN) {
+			ret->projOnScreen[iterProjOS] = nullptr;
+			++iterProjOS;
+		}
 		ret->colBox = createCollisionBox(ret);
 	}
 	return ret;
@@ -99,15 +103,21 @@ bool turn(tank* tank1, lor direction){
 	return 1;
 }
 
-void shoot(tank* tank1){
+void shoot(tank* tank1) {
 	projectile* shot = createProjectile(tank1);
-	addProjNode(projectilesShot, shot);
+	unsigned int iterProjOS = 0;
+	while (iterProjOS < MAX_PROJECTILES_ONSCREEN) {
+		if (tank1->projOnScreen[iterProjOS] == nullptr)
+			break;
+		++iterProjOS;
+	}
+	tank1->projOnScreen[iterProjOS] = shot;
 }
 
 void aim(tank* tank1, coords where){
-	double m = (where.x.doubleVal - tank1->pos.x.doubleVal) / 
-				(where.y.doubleVal - tank1->pos.y.doubleVal);
-	tank1->rotation = atan(m) / RADIAN;
+	tank1->rotation = (long long)(atan2(where.y.doubleVal - tank1->pos.y.doubleVal, where.x.doubleVal - tank1->pos.x.doubleVal) / RADIAN) % 360;
+	tank1->stepX = (double)(cos(tank1->rotation * RADIAN) * tank1->speed);
+	tank1->stepY = (double)(sin(tank1->rotation * RADIAN) * tank1->speed);
 }
 
 void addPowerup(tank* tank1, powerupCode what){
