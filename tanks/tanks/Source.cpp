@@ -136,6 +136,7 @@ int main(int argc, char* args[])
 			showMap();
 			for (int i = 0; i < numberOfEnemies + numberOfHumans; i++)
 			{
+				updatePowerups();
 				if (i < numberOfHumans)
 				{
 					pController[i].update();
@@ -161,7 +162,7 @@ int main(int argc, char* args[])
 				while (j < MAX_PROJECTILES_ONSCREEN) {
 					if (tankVector[i]->projOnScreen[j] != nullptr)
 					{
-						bullet.render(getLongX(tankVector[i]->projOnScreen[j]) + 64 , getLongY(tankVector[i]->projOnScreen[j])  + 64 , tankVector[i]->projOnScreen[j]->rotation);
+						bullet.render(getLongX(tankVector[i]->projOnScreen[j]) , getLongY(tankVector[i]->projOnScreen[j]) , tankVector[i]->projOnScreen[j]->rotation);
 					}
 					j++;
 				}
@@ -444,6 +445,7 @@ void spawnTanks()
 	for (i = numberOfHumans; i < numberOfEnemies + numberOfHumans; i++)
 	{
 		tankVector[i] = createTank(general, i, playerSpawners[i].x.doubleVal -0.5, playerSpawners[i].y.doubleVal -0.5);
+		addDiff(tankVector[i], difficulty);
 		pController[i].ownedTank = NULL;
 	}
 	cout << "Spawned tanks." << endl;
