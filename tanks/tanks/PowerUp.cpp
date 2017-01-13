@@ -5,6 +5,7 @@ void PowerUp::setPowerUp(double x, double y, powerupCode t, SDL_Renderer *target
 {
 	pos.x.doubleVal = x;
 	pos.y.doubleVal = y;
+	rotation = 0;
 	type = t;
 	duration = d;
 	dim.x.doubleVal = 1.0;

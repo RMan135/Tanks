@@ -5,6 +5,7 @@
 #include "Button.h"
 #include "Menu.h"
 #include "PowerUp.h"
+#include "PlayerController.h"
 #include "terrain.h"
 #include "terrainGeneration.h"
 #include "coord.h"
@@ -13,7 +14,6 @@ using namespace std;
 #define SCREEN_WIDTH 768
 #define SCREEN_HEIGHT 576
 #define FPS 60
-
 enum State
 {
 	MAIN_MENU = 0, GAME_SETUP = 1, PLAYING = 2, GAME_OVER = 3, MAP_SELECTION = 4, GENERATE = 5, LOAD = 6
@@ -21,14 +21,14 @@ enum State
 
 Menu menus[7];
 
-PowerUp powerUp;
-
 State gameState = MAIN_MENU;
 bool pause = false;
 void changeGameState(int newGameState);
 int numberOfHumans = 1;
 int numberOfEnemies = 1;
 int difficulty = 1;
+
+PlayerController pController[2];
 
 void addHuman();
 void addEnemy();
@@ -102,7 +102,8 @@ int main(int argc, char* args[])
 
 	currentTileset.loadTileset("cave", RENDER_TARGET);
 	nextMap();
-	powerUp.setPowerUp(5, 5, god, RENDER_TARGET);
+	pController[0].setPlayerOne();
+	pController[1].setPlayerTwo();
 
 	while (running)
 	{
@@ -120,7 +121,6 @@ int main(int argc, char* args[])
 		if (gameState == PLAYING)
 		{
 			showMap();
-			powerUp.show();
 		}
 
 		// show tanks here
@@ -136,7 +136,6 @@ int main(int argc, char* args[])
 			displayDifficulty(138, 234, difficulty, 12);
 		}
 
-		cout << mouseX/24 << " " << mouseY/24 << endl;
 
 		// Update window
 		SDL_RenderPresent(RENDER_TARGET);
@@ -174,7 +173,7 @@ void init()
 void handleEvents()
 {
 	SDL_GetMouseState(&mouseX, &mouseY);
-	
+	int i;
 	while (SDL_PollEvent(&e))
 	{
 		if (e.type == SDL_QUIT)
@@ -184,25 +183,41 @@ void handleEvents()
 		}
 		if (e.type == SDL_KEYDOWN)
 		{
-			if (e.key.keysym.sym == SDLK_w)
-			{
-				//move forwards
-			}
-			if (e.key.keysym.sym == SDLK_s)
-			{
-				//move backwards
-			}
-			if (e.key.keysym.sym == SDLK_a)
-			{
-				//rotate left
-			}
-			if (e.key.keysym.sym == SDLK_d)
-			{
-				//rorate right
-			}
+			
 			if (e.key.keysym.sym == SDLK_SPACE)
 			{
 				randomMap();
+			}
+		}
+		if (e.type == SDL_KEYUP)
+		{
+			if (e.key.keysym.sym == SDLK_w)
+			{
+				for (i = 0; i < numberOfHumans; i++)
+				{
+					pController[i].keyUp(SDLK_w);
+				}
+			}
+			if (e.key.keysym.sym == SDLK_s)
+			{
+				for (i = 0; i < numberOfHumans; i++)
+				{
+					pController[i].keyUp(SDLK_s);
+				}
+			}
+			if (e.key.keysym.sym == SDLK_a)
+			{
+				for (i = 0; i < numberOfHumans; i++)
+				{
+					pController[i].keyUp(SDLK_a);
+				}
+			}
+			if (e.key.keysym.sym == SDLK_d)
+			{
+				for (i = 0; i < numberOfHumans; i++)
+				{
+					pController[i].keyUp(SDLK_d);
+				}
 			}
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN && mouseDown == false)
