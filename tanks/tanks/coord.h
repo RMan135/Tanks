@@ -6,6 +6,7 @@
 #define COORD_HEADER
 
 struct tank;
+struct projectile;
 
 union doublong{
 	double doubleVal;
@@ -21,7 +22,7 @@ struct coords{
 
 void coordToDouble(coords& pos); // converteste coordonatele la double
 void coordToLong(coords& pos); // converteste coordonatele la long
-unsigned long long getLongX(tank* tank1);
-unsigned long long getLongY(tank* tank1);
+template <class type> unsigned long long getLongX(type* tank1);
+template <class type> unsigned long long getLongY(type* tank1);
 
 #endif
