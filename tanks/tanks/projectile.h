@@ -7,7 +7,7 @@
 
 #include "coord.h"
 
-#define PROJECTILE_SIZE 5
+#define PROJECTILE_SIZE 0.20833333
 
 struct tank;
 struct collisionBox;
