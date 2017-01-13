@@ -73,6 +73,24 @@ void resetTank(tank* tank1, tankType type, unsigned int team, double initX, doub
 	addPowerup(tank1, powerupCode::god);
 }
 
+void addDiff(tank* tank1, unsigned short howmuch) {
+	tank1->maxHealth += 5 * howmuch;
+	tank1->damageMod += 0.025 * howmuch;
+	tank1->speed += 0.0025 * howmuch;
+	tank1->rotationSpeed += (unsigned int)(0.3 * howmuch);
+}
+
+void subDiff(tank* tank1, unsigned short howmuch) {
+	if(tank1->maxHealth - 5 * howmuch > 10)
+		tank1->maxHealth -= 5 * howmuch;
+	if(tank1->damageMod - 0.025 * howmuch > 0.1)
+		tank1->damageMod -= 0.025 * howmuch;
+	if(tank1->speed - 0.0025 * howmuch > 0.001)
+		tank1->speed -= 0.0025 * howmuch;
+	if(tank1->rotationSpeed - (unsigned int)(0.3 * howmuch) > 1)
+		tank1->rotationSpeed -= (unsigned int)(0.3 * howmuch);
+}
+
 void destroyTank(tank* tank){
 	{
 		int i = 0;
