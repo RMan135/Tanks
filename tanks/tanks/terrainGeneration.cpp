@@ -121,6 +121,7 @@ void generateRandomCoordinates(short &x, short &y, matrix mat)
 
 bool generateMapAndConfirm(short placementChance, short emptyLimit, short occupiedLimit, short smoothness, short noOfPlayers)
 {
+    srand (time(NULL));
     short x, y;
 
     generateRandomMatrix(collisionMap, placementChance);
@@ -129,6 +130,7 @@ bool generateMapAndConfirm(short placementChance, short emptyLimit, short occupi
 
     generateRandomCoordinates(x, y, collisionMap);
     DFS(accessibleTiles, x, y);
+    //copyMatrix(canReach, accessibleTiles);
 
     for (int k = 0; k < noOfPlayers; ++k)
     {
