@@ -36,6 +36,8 @@ int i;
 Texture tankTexture, bullet;
 void spawnTanks();
 int countAliveTanks();
+void generateHealthBarColor(int health, int &r, int &g, int &b);
+
 
 void addHuman();
 void addEnemy();
@@ -133,22 +135,29 @@ int main(int argc, char* args[])
 				SDL_Delay(3000);
 				changeGameState(GAME_OVER);
 			}
+			updatePowerups();
 			showMap();
 			for (int i = 0; i < numberOfEnemies + numberOfHumans; i++)
 			{
-				updatePowerups();
-				if (i < numberOfHumans)
-				{
-					pController[i].update();
-				}
-				else
-					act(tankVector[i]);
-				if (tankVector[i]->alive)
-				{
-					SDL_Rect hpBar = { getLongX(tankVector[i]) - 3, getLongY(tankVector[i]) - 12, tankVector[i]->health/3, 3 };
-					SDL_SetRenderDrawColor(RENDER_TARGET, 255 - tankVector[i]->health * 2, tankVector[i]->health * 2, 0, 255);
-					tankTexture.render(getLongX(tankVector[i]), getLongY(tankVector[i]), tankVector[i]->rotation);
-					SDL_RenderFillRect(RENDER_TARGET, &hpBar);
+				if (tankVector[i] != NULL)
+				{					
+					if (i < numberOfHumans)
+					{
+						pController[i].update();
+					}
+					else
+						act(tankVector[i]);
+					if (tankVector[i]->alive)
+					{
+						int r, g, b;
+						generateHealthBarColor(tankVector[i]->health, r, g, b);
+						SDL_Rect hpBar = { getLongX(tankVector[i]) - 3, getLongY(tankVector[i]) - 12, tankVector[i]->health / 3, 3 };
+						SDL_SetRenderDrawColor(RENDER_TARGET, r, g, b, 255);
+						tankTexture.render(getLongX(tankVector[i]), getLongY(tankVector[i]), tankVector[i]->rotation);
+						SDL_RenderFillRect(RENDER_TARGET, &hpBar);
+					}
+					else
+						destroyTank(tankVector[i]);
 				}
 				int j = 0;
 				while (j < MAX_PROJECTILES_ONSCREEN) {
@@ -540,4 +549,24 @@ int countAliveTanks()
 			num++;
 	}
 	return num;
+}
+
+void generateHealthBarColor(int health, int &r, int &g, int &b)
+{
+	double red, green, blue;
+	red = health;
+	red = 255 - red * 2.55;
+	if (red > 255) red = 255;
+	if (red < 0) red = 0;
+	green = health;
+	green = green * 2.55;
+	if (green > 255) green = 255;
+	if (green < 0) green = 0;
+	blue = health;
+	blue = -100*5 + blue*5;
+	if (blue > 255) blue = 255;
+	if (blue < 0) blue = 0;
+	r = red;
+	g = green;
+	b = blue;
 }
