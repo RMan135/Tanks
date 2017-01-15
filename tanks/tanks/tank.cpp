@@ -41,8 +41,8 @@ tank* createTank(tankType type, unsigned int team, double initX, double initY){
 			++iterProjOS;
 		}
 		ret->colBox = createCollisionBox(ret);
+		addPowerup(ret, powerupCode::god);
 	}
-	addPowerup(ret, powerupCode::god);
 	return ret;
 }
 
@@ -58,6 +58,7 @@ void resetTank(tank* tank1, tankType type, unsigned int team, double initX, doub
 	tank1->maxHealth = 80 + type * 25;
 	tank1->health = tank1->maxHealth;
 	tank1->damageMod = 0.5 + type / 4;
+	tank1->ammoType = projectileType::normal;
 	tank1->nextShot = 0;
 	tank1->cooldown = 350 * type;
 	tank1->speed = 0.075 + 1 / (type * 20) ;
@@ -159,15 +160,15 @@ void shoot(tank* tank1) {
 }
 
 void aim(tank* tank1, coords where){
-	tank1->rotation = (long long)(atan2(where.y.doubleVal - tank1->pos.y.doubleVal, where.x.doubleVal - tank1->pos.x.doubleVal) / RADIAN) % 360;
-	tank1->stepX = (double)(cos(tank1->rotation * RADIAN) * tank1->speed);
-	tank1->stepY = (double)(sin(tank1->rotation * RADIAN) * tank1->speed);
+	tank1->rotation = (360 + (unsigned int)(atan2(where.y.doubleVal - tank1->pos.y.doubleVal, where.x.doubleVal - tank1->pos.x.doubleVal) / RADIAN)) % 360;
+	tank1->stepX = cos(tank1->rotation * RADIAN) * tank1->speed;
+	tank1->stepY = sin(tank1->rotation * RADIAN) * tank1->speed;
 }
 
 void aim(tank* tank1, double wx, double wy) {
-	tank1->rotation = (long long)(atan2(wy - tank1->pos.y.doubleVal, wx - tank1->pos.x.doubleVal) / RADIAN) % 360;
-	tank1->stepX = (double)(cos(tank1->rotation * RADIAN) * tank1->speed);
-	tank1->stepY = (double)(sin(tank1->rotation * RADIAN) * tank1->speed);
+	tank1->rotation = (360 + (unsigned int)(atan2(abs(wy - tank1->pos.y.doubleVal), abs(wx - tank1->pos.x.doubleVal)) / RADIAN)) % 360;
+	tank1->stepX = cos(tank1->rotation * RADIAN) * tank1->speed;
+	tank1->stepY = sin(tank1->rotation * RADIAN) * tank1->speed;
 }
 
 void addPowerup(tank* tank1, PowerUp* what){
@@ -195,7 +196,7 @@ void addPowerup(tank* tank1, PowerUp* what){
 void addPowerup(tank* tank1, powerupCode what) {
 	switch (what) {
 	case heal:
-		if (tank1->health == 0.5 * tank1->maxHealth)
+		if (tank1->health <= 0.5 * tank1->maxHealth)
 			tank1->health = tank1->maxHealth;
 		else tank1->health += 0.5 * tank1->maxHealth;
 		break;
@@ -208,44 +209,43 @@ void addPowerup(tank* tank1, powerupCode what) {
 		tank1->powerups[oneshot] += 3;
 		break;
 	}
-	tank1->powerups[what] = SDL_GetTicks() + 2500;
+	tank1->powerups[what] = SDL_GetTicks() + 500;
 }
 
 
 void updatePowerups(){
 	unsigned long long curTicks = SDL_GetTicks();
-	tank* curTank;
-	int iterPower = 0;
-
+	unsigned int iterPower;
 	for(int iterTank = 0; iterTank < MAX_TANK_NUMBER; ++iterTank){
-		curTank = tankVector[iterTank];
+		iterPower = 0;
+		if (tankVector[iterTank] != nullptr) {
+			while (iterPower < TIMED_POWERUPS) {
+				switch ((powerupCode)iterPower) {
+				case powerupCode::speed:
+					if (tankVector[iterTank]->powerups[iterPower] && curTicks > tankVector[iterTank]->powerups[iterPower]) {
+						tankVector[iterTank]->speed = 0.5 * tankVector[iterTank]->speed;
+						tankVector[iterTank]->powerups[iterPower] = 0;
+					}
+					break;
 
-		while(iterPower < TIMED_POWERUPS){
-			switch(curTank->powerups[iterPower]){
-				case speed:
-				if(curTicks > curTank->powerups[iterPower]){
-					curTank->speed = 0.5 * curTank->speed;
-					curTank->powerups[iterPower] = 0;
-				}
-				break;
-				
-				case damage:
-				if(curTicks > curTank->powerups[iterPower]){
-					curTank->damageMod = 0.5 * curTank->damageMod;
-					curTank->powerups[iterPower] = 0;
-				}
-				break;
+				case powerupCode::damage:
+					if (tankVector[iterTank]->powerups[iterPower] && curTicks > tankVector[iterTank]->powerups[iterPower]) {
+						tankVector[iterTank]->damageMod = 0.5 * tankVector[iterTank]->damageMod;
+						tankVector[iterTank]->powerups[iterPower] = 0;
+					}
+					break;
 
-				case god:
-				if(curTicks > curTank->powerups[iterPower]){
-					curTank->powerups[iterPower] = 0;
-				}
-				break;
+				case powerupCode::god:
+					if (tankVector[iterTank]->powerups[iterPower] && curTicks > tankVector[iterTank]->powerups[iterPower]) {
+						tankVector[iterTank]->powerups[iterPower] = 0;
+					}
+					break;
 
 				default:
-				break;
+					break;
+				}
+				++iterPower;
 			}
-			++iterPower;
 		}
 	}
 }
