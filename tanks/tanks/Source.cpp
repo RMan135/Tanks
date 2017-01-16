@@ -33,13 +33,10 @@ int difficulty;
 PlayerController pController[2];
 int i;
 
-Texture tankTexture, bullet, teamOverlay;
+Texture tankTexture, bullet;
 void spawnTanks();
 int countAliveHumans();
-int countAliveEnemies();
-bool checkGameOver();
 void generateHealthBarColor(int health, int &r, int &g, int &b);
-void generateTeamColor(int team, int &r, int &g, int &b);
 
 
 void addHuman();
@@ -111,13 +108,11 @@ int main(int argc, char* args[])
 		}
 	}
 
-	currentTileset.loadTileset("forest", RENDER_TARGET);
+	currentTileset.loadTileset("cave", RENDER_TARGET);
 	tankTexture.setRenderTarget(RENDER_TARGET);
 	tankTexture.loadTexture("media/tank.png");
 	bullet.setRenderTarget(RENDER_TARGET);
 	bullet.loadTexture("media/bullet.png");
-	teamOverlay.setRenderTarget(RENDER_TARGET);
-	teamOverlay.loadTexture("media/tank_team_overlay.png");
 	
 
 	while (running)
@@ -134,7 +129,7 @@ int main(int argc, char* args[])
 
 		if (gameState == PLAYING)
 		{
-			if (checkGameOver())
+			if ((countAliveHumans() == 0 && numberOfEnemies > 0) || (countAliveHumans() == 1 && numberOfEnemies == 0))
 			{
 				SDL_Delay(3000);
 				changeGameState(GAME_OVER);
@@ -150,20 +145,15 @@ int main(int argc, char* args[])
 						pController[i].update();
 					}
 					else
-						act(tankVector[i], i);
+						act(tankVector[i]);
 					if (tankVector[i]->alive)
 					{
 						int r, g, b;
 						generateHealthBarColor(tankVector[i]->health, r, g, b);
 						SDL_Rect hpBar = { getLongX(tankVector[i]) - 3, getLongY(tankVector[i]) - 12, tankVector[i]->health / 3, 3 };
 						SDL_SetRenderDrawColor(RENDER_TARGET, r, g, b, 255);
-
 						tankTexture.render(getLongX(tankVector[i]), getLongY(tankVector[i]), tankVector[i]->rotation);
 						SDL_RenderFillRect(RENDER_TARGET, &hpBar);
-
-						generateTeamColor(tankVector[i]->team, r, g, b);
-						teamOverlay.setColor(r, g, b);
-						teamOverlay.render(getLongX(tankVector[i]), getLongY(tankVector[i]), tankVector[i]->rotation);
 					}
 					else
 						destroyTank(tankVector[i]);
@@ -462,7 +452,7 @@ void spawnTanks()
 	}
 	for (i = numberOfHumans; i < numberOfEnemies + numberOfHumans; i++)
 	{
-		tankVector[i] = createTank(general, 2, playerSpawners[i].x.doubleVal -0.5, playerSpawners[i].y.doubleVal -0.5);
+		tankVector[i] = createTank(general, i, playerSpawners[i].x.doubleVal -0.5, playerSpawners[i].y.doubleVal -0.5);
 		addDiff(tankVector[i], difficulty);
 		pController[i].ownedTank = NULL;
 	}
@@ -561,83 +551,22 @@ int countAliveHumans()
 	return num;
 }
 
-int countAliveEnemies()
-{
-	int i, num = 0;
-	for (i = numberOfHumans; i < numberOfEnemies + numberOfHumans; i++)
-	{
-		if (tankVector[i] != nullptr)
-			if (tankVector[i]->alive)
-				num++;
-	}
-	return num;
-}
-
-bool checkGameOver()
-{
-	if (numberOfHumans > 1)
-	{
-		if (numberOfEnemies == 0)
-		{
-			if (countAliveHumans() == 1)
-				return 1;
-		}
-		else
-		{
-			if (countAliveHumans() == 1 && countAliveEnemies() == 0)
-				return 1;
-			if (countAliveHumans() == 0 && countAliveEnemies() > 0)
-				return 1;
-		}
-	}
-	else
-	{
-		if (countAliveEnemies() == 0)
-			return 1;
-		if (countAliveHumans() == 0)
-			return 1;
-	}
-	return 0;
-}
-
 void generateHealthBarColor(int health, int &r, int &g, int &b)
 {
 	double red, green, blue;
 	red = health;
-	red = 511 - red * 5.11;
+	red = 255 - red * 2.55;
 	if (red > 255) red = 255;
 	if (red < 0) red = 0;
 	green = health;
-	green = green * 5.11;
+	green = green * 2.55;
 	if (green > 255) green = 255;
 	if (green < 0) green = 0;
 	blue = health;
-	blue = -100*10.23 + blue*10.23;
+	blue = -100*5 + blue*5;
 	if (blue > 255) blue = 255;
 	if (blue < 0) blue = 0;
 	r = red;
 	g = green;
 	b = blue;
-}
-
-void generateTeamColor(int team, int &r, int &g, int &b)
-{
-	switch (team)
-	{
-	case 0:
-		r = 0;
-		g = 255;
-		b = 0;
-		break;
-	case 1:
-		r = 64;
-		g = 128;
-		b = 255;
-		break;
-	case 2:
-		r = 255;
-		g = 0;
-		b = 0;
-		break;
-	}
 }
