@@ -47,7 +47,7 @@ bool canFire(double x1, double y1, double x2, double y2)
     short dist, nrSteps = 1, nrIncrements = 1;
     dist = distance(x1, x2, y1, y2);
 
-    while (nrIncrements <= dist)
+    while (nrIncrements <= dist * 16)
     {
         nrSteps++;
         nrIncrements *= 2;
@@ -81,6 +81,7 @@ short route(short x1, short y1, short x2, short y2, short movX[200], short movY[
         steps[MAX_TILES_WIDTH][MAX_TILES_HEIGHT];
 
     short qi[1000], qj[1000];
+	getClosestReachableTile(x2, y2);
 
     for (i = 0; i < collisionMap.width + 2; ++i)
         for (j = 0; j < collisionMap.height + 2; ++j)
@@ -115,18 +116,6 @@ short route(short x1, short y1, short x2, short y2, short movX[200], short movY[
         qPos++;
     }
 
-    /*
-    for (int j = 0; j < collisionMap.height + 2; ++j)
-       {
-            for (int i = 0; i < collisionMap.width + 2; ++i)
-            {
-                cout << steps[i][j];
-                if (steps[i][j] < 10) cout<<' ';
-            }
-            cout << endl;
-       }
-    */
-
     length = steps[i][j];
 
     for (short l = length; l > 1; --l)
@@ -144,16 +133,7 @@ short route(short x1, short y1, short x2, short y2, short movX[200], short movY[
 
     movX[1] = x1;
     movY[1] = y1;
-    routeLength = length;
-
-    /*
-    cout << endl;
-
-    for (i = 1; i <= length; ++i)
-    {
-        cout << movX[i] << ' ' << movY[i] << endl;
-    }
-    */
+    routeLength = length;   
 
     return 0;
 }

@@ -60,7 +60,7 @@ bool turn(tank* tank1, lor direction);
 void shoot(tank* tank1);
 void aim(tank* tank1, coords where);
 void aim(tank* tank1, double wx, double wy);
-void act(tank* tank1); // AIu'; functia apelata in fiecare frame, pentru
+void act(tank* tank1, short tankNumber); // AIu'; functia apelata in fiecare frame, pentru
 					// fiecare tank
 
 #endif
