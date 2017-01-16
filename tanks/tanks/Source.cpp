@@ -445,7 +445,12 @@ void randomMap()
 
 void spawnTanks()
 {
-	int i;
+	int i = 0;
+	while (i < MAX_TANK_NUMBER) {
+		if (tankVector[i] != nullptr)
+			destroyTank(tankVector[i]);
+		++i;
+	}
 	for (i = 0; i < numberOfHumans; i++)
 	{
 		tankVector[i] = createTank(general , i, playerSpawners[i].x.doubleVal - 0.5, playerSpawners[i].y.doubleVal - 0.5);
