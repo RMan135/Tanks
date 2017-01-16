@@ -9,19 +9,6 @@
 
 tank* tankVector[MAX_TANK_NUMBER];
 
-short nextPoint = 1,
-endPoint = 1,
-pointCoordsX[200],
-pointCoordsY[200],
-routeLength = 0;
-
-bool reachedNextPoint(double x1, double y1){
-	double x2 = (double)pointCoordsX[nextPoint];
-	double y2 = (double)pointCoordsY[nextPoint];
-	return (sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1)) < 0.2);
-}
-
-
 tank* createTank(tankType type, unsigned int team, double initX, double initY){
 	tank* ret = nullptr;
 	int i = 0;
@@ -41,8 +28,8 @@ tank* createTank(tankType type, unsigned int team, double initX, double initY){
 			++iterProjOS;
 		}
 		ret->colBox = createCollisionBox(ret);
+		addPowerup(ret, powerupCode::god);
 	}
-	addPowerup(ret, powerupCode::god);
 	return ret;
 }
 
@@ -58,6 +45,7 @@ void resetTank(tank* tank1, tankType type, unsigned int team, double initX, doub
 	tank1->maxHealth = 80 + type * 25;
 	tank1->health = tank1->maxHealth;
 	tank1->damageMod = 0.5 + type / 4;
+	tank1->ammoType = projectileType::normal;
 	tank1->nextShot = 0;
 	tank1->cooldown = 350 * type;
 	tank1->speed = 0.075 + 1 / (type * 20) ;
@@ -101,6 +89,7 @@ void destroyTank(tank* tank){
 		while(i < MAX_TANK_NUMBER){
 			if(tankVector[i] == tank)
 				break;
+			i++;
 		}
 		if(i < MAX_TANK_NUMBER){
 			tankVector[i] = nullptr;
@@ -159,15 +148,15 @@ void shoot(tank* tank1) {
 }
 
 void aim(tank* tank1, coords where){
-	tank1->rotation = (long long)(atan2(where.y.doubleVal - tank1->pos.y.doubleVal, where.x.doubleVal - tank1->pos.x.doubleVal) / RADIAN) % 360;
-	tank1->stepX = (double)(cos(tank1->rotation * RADIAN) * tank1->speed);
-	tank1->stepY = (double)(sin(tank1->rotation * RADIAN) * tank1->speed);
+	tank1->rotation = (360 + (unsigned int)(atan2(where.y.doubleVal - tank1->pos.y.doubleVal, where.x.doubleVal - tank1->pos.x.doubleVal) / RADIAN)) % 360;
+	tank1->stepX = cos(tank1->rotation * RADIAN) * tank1->speed;
+	tank1->stepY = sin(tank1->rotation * RADIAN) * tank1->speed;
 }
 
 void aim(tank* tank1, double wx, double wy) {
-	tank1->rotation = (long long)(atan2(wy - tank1->pos.y.doubleVal, wx - tank1->pos.x.doubleVal) / RADIAN) % 360;
-	tank1->stepX = (double)(cos(tank1->rotation * RADIAN) * tank1->speed);
-	tank1->stepY = (double)(sin(tank1->rotation * RADIAN) * tank1->speed);
+	tank1->rotation = (360 + (unsigned int)(atan2(wy - tank1->pos.y.doubleVal, wx - tank1->pos.x.doubleVal) / RADIAN)) % 360;
+	tank1->stepX = cos(tank1->rotation * RADIAN) * tank1->speed;
+	tank1->stepY = sin(tank1->rotation * RADIAN) * tank1->speed;
 }
 
 void addPowerup(tank* tank1, PowerUp* what){
@@ -195,7 +184,7 @@ void addPowerup(tank* tank1, PowerUp* what){
 void addPowerup(tank* tank1, powerupCode what) {
 	switch (what) {
 	case heal:
-		if (tank1->health == 0.5 * tank1->maxHealth)
+		if (tank1->health <= 0.5 * tank1->maxHealth)
 			tank1->health = tank1->maxHealth;
 		else tank1->health += 0.5 * tank1->maxHealth;
 		break;
@@ -208,7 +197,7 @@ void addPowerup(tank* tank1, powerupCode what) {
 		tank1->powerups[oneshot] += 3;
 		break;
 	}
-	tank1->powerups[what] = SDL_GetTicks() + 2500;
+	tank1->powerups[what] = SDL_GetTicks() + 500;
 }
 
 
@@ -250,25 +239,52 @@ void updatePowerups(){
 	}
 }
 
+struct tankMovement
+{
+	bool isShooting = 0, gotOut = 0;
+	double prevPosX = 0, prevPosY = 0;
 
-void act(tank* tank1) {
-	if (nextPoint > endPoint)
+	short nextPoint,
+		endPoint,
+		pointCoordsX[300],
+		pointCoordsY[300],
+		routeLength;
+} t[4];
+
+bool reachedNextPoint(double x1, double y1, short nr) {
+	double x2 = (double)t[nr].pointCoordsX[t[nr].nextPoint];
+	double y2 = (double)t[nr].pointCoordsY[t[nr].nextPoint];
+	return ((abs(x1 - x2) < 0.2) && (abs(y1 - y2) < 0.2));
+}
+
+
+void act(tank* tank1, short nr) {
+	if ((t[nr].nextPoint > t[nr].endPoint - 1) || (t[nr].gotOut == 1 && t[nr].isShooting == 0))
 	{
-		nextPoint = 1;
-		route(tank1->pos.x.doubleVal, tank1->pos.y.doubleVal, tankVector[0]->pos.x.doubleVal, tankVector[0]->pos.x.doubleVal,
-			pointCoordsX, pointCoordsY, routeLength);
+		t[nr].nextPoint = 2;
+		route(tank1->pos.x.doubleVal, tank1->pos.y.doubleVal, tankVector[0]->pos.x.doubleVal, tankVector[0]->pos.y.doubleVal,
+			t[nr].pointCoordsX, t[nr].pointCoordsY, t[nr].routeLength);
+		t[nr].endPoint = t[nr].routeLength;
+		t[nr].gotOut = 0;
 	}
-
-	if (canFire(tank1->pos.x.doubleVal, tank1->pos.y.doubleVal, tankVector[0]->pos.x.doubleVal, tankVector[0]->pos.x.doubleVal))
+	if(tankVector[0] != nullptr)
+	if (canFire(tank1->pos.x.doubleVal, tank1->pos.y.doubleVal, tankVector[0]->pos.x.doubleVal, tankVector[0]->pos.y.doubleVal))
 	{
-		aim(tank1, tankVector[0]->pos);
+		aim(tank1, tankVector[0]->pos.x.doubleVal, tankVector[0]->pos.y.doubleVal);
 		shoot(tank1);
+		t[nr].isShooting = 1;
+		t[nr].gotOut = 1;
 	}
 	else
 	{
-		aim(tank1, pointCoordsX[nextPoint], pointCoordsY[nextPoint]);
+		aim(tank1, t[nr].pointCoordsX[t[nr].nextPoint], t[nr].pointCoordsY[t[nr].nextPoint]);
 		move(tank1, fob::forward);
-		if (reachedNextPoint(tank1->pos.x.doubleVal, tank1->pos.x.doubleVal))
-			nextPoint++;
+		if (t[nr].prevPosX == tank1->pos.x.doubleVal && t[nr].prevPosY == tank1->pos.y.doubleVal)
+			t[nr].nextPoint--;
+		if (reachedNextPoint(tank1->pos.x.doubleVal, tank1->pos.y.doubleVal, nr))
+			t[nr].nextPoint++;
+		t[nr].isShooting = 0;
+		t[nr].prevPosX = tank1->pos.x.doubleVal;
+		t[nr].prevPosY = tank1->pos.y.doubleVal;
 	}
 }
