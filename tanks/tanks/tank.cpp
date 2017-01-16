@@ -216,41 +216,41 @@ void addPowerup(tank* tank1, powerupCode what) {
 
 void updatePowerups(){
 	unsigned long long curTicks = SDL_GetTicks();
-	unsigned int iterPower;
+	tank* curTank;
+	int iterPower = 0;
+
 	for(int iterTank = 0; iterTank < MAX_TANK_NUMBER; ++iterTank){
-		iterPower = 0;
-		if (tankVector[iterTank] != nullptr) {
-			while (iterPower < TIMED_POWERUPS) {
-				switch ((powerupCode)iterPower) {
-				case powerupCode::speed:
-					if (tankVector[iterTank]->powerups[iterPower] && curTicks > tankVector[iterTank]->powerups[iterPower]) {
-						tankVector[iterTank]->speed = 0.5 * tankVector[iterTank]->speed;
-						tankVector[iterTank]->powerups[iterPower] = 0;
-					}
-					break;
+		curTank = tankVector[iterTank];
 
-				case powerupCode::damage:
-					if (tankVector[iterTank]->powerups[iterPower] && curTicks > tankVector[iterTank]->powerups[iterPower]) {
-						tankVector[iterTank]->damageMod = 0.5 * tankVector[iterTank]->damageMod;
-						tankVector[iterTank]->powerups[iterPower] = 0;
-					}
-					break;
+		while(iterPower < TIMED_POWERUPS){
+			switch(curTank->powerups[iterPower]){
+				case speed:
+				if(curTicks > curTank->powerups[iterPower]){
+					curTank->speed = 0.5 * curTank->speed;
+					curTank->powerups[iterPower] = 0;
+				}
+				break;
+				
+				case damage:
+				if(curTicks > curTank->powerups[iterPower]){
+					curTank->damageMod = 0.5 * curTank->damageMod;
+					curTank->powerups[iterPower] = 0;
+				}
+				break;
 
-				case powerupCode::god:
-					if (tankVector[iterTank]->powerups[iterPower] && curTicks > tankVector[iterTank]->powerups[iterPower]) {
-						tankVector[iterTank]->powerups[iterPower] = 0;
-					}
-					break;
+				case god:
+				if(curTicks > curTank->powerups[iterPower]){
+					curTank->powerups[iterPower] = 0;
+				}
+				break;
 
 				default:
-					break;
-				}
-				++iterPower;
+				break;
 			}
+			++iterPower;
 		}
 	}
 }
-
 
 void act(tank* tank1) {
 	if (nextPoint > endPoint)
