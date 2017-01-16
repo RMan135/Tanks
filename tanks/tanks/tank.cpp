@@ -102,6 +102,7 @@ void destroyTank(tank* tank){
 		while(i < MAX_TANK_NUMBER){
 			if(tankVector[i] == tank)
 				break;
+			i++;
 		}
 		if(i < MAX_TANK_NUMBER){
 			tankVector[i] = nullptr;
@@ -258,7 +259,7 @@ void act(tank* tank1) {
 		route(tank1->pos.x.doubleVal, tank1->pos.y.doubleVal, tankVector[0]->pos.x.doubleVal, tankVector[0]->pos.x.doubleVal,
 			pointCoordsX, pointCoordsY, routeLength);
 	}
-
+	if(tankVector[0] != nullptr)
 	if (canFire(tank1->pos.x.doubleVal, tank1->pos.y.doubleVal, tankVector[0]->pos.x.doubleVal, tankVector[0]->pos.x.doubleVal))
 	{
 		aim(tank1, tankVector[0]->pos);

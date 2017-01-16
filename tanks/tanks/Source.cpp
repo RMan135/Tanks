@@ -35,7 +35,7 @@ int i;
 
 Texture tankTexture, bullet;
 void spawnTanks();
-int countAliveTanks();
+int countAliveHumans();
 void generateHealthBarColor(int health, int &r, int &g, int &b);
 
 
@@ -109,7 +109,6 @@ int main(int argc, char* args[])
 	}
 
 	currentTileset.loadTileset("cave", RENDER_TARGET);
-	nextMap();
 	tankTexture.setRenderTarget(RENDER_TARGET);
 	tankTexture.loadTexture("media/tank.png");
 	bullet.setRenderTarget(RENDER_TARGET);
@@ -130,7 +129,7 @@ int main(int argc, char* args[])
 
 		if (gameState == PLAYING)
 		{
-			if (countAliveTanks() == 0)
+			if ((countAliveHumans() == 0 && numberOfEnemies > 0) || (countAliveHumans() == 1 && numberOfEnemies == 0))
 			{
 				SDL_Delay(3000);
 				changeGameState(GAME_OVER);
@@ -161,7 +160,7 @@ int main(int argc, char* args[])
 				}
 				int j = 0;
 				while (j < MAX_PROJECTILES_ONSCREEN) {
-					if (tankVector[i]->projOnScreen[j] != nullptr)
+					if (tankVector[i] != nullptr && tankVector[i]->projOnScreen[j] != nullptr)
 					{
 						exist(tankVector[i]->projOnScreen[j]);
 					}
@@ -169,7 +168,7 @@ int main(int argc, char* args[])
 				}
 				j = 0;
 				while (j < MAX_PROJECTILES_ONSCREEN) {
-					if (tankVector[i]->projOnScreen[j] != nullptr)
+					if (tankVector[i] != nullptr && tankVector[i]->projOnScreen[j] != nullptr)
 					{
 						bullet.render(getLongX(tankVector[i]->projOnScreen[j]) , getLongY(tankVector[i]->projOnScreen[j]) , tankVector[i]->projOnScreen[j]->rotation);
 					}
@@ -233,7 +232,7 @@ void resetValues()
 	numberOfEnemies = 1;
 	difficulty = 1;
 		
-	int currentMap = -1;
+	int currentMap = 0;
 	nextMap();
 }
 
@@ -540,13 +539,14 @@ void displayDifficulty(int x, int y, int n, int scale)
 	}
 }
 
-int countAliveTanks()
+int countAliveHumans()
 {
 	int i, num = 0;
 	for (i = 0; i < numberOfHumans; i++)
 	{
-		if (tankVector[i]->alive)
-			num++;
+		if(tankVector[i] != nullptr)
+			if (tankVector[i]->alive)
+				num++;
 	}
 	return num;
 }
