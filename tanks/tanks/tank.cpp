@@ -9,6 +9,7 @@
 
 tank* tankVector[MAX_TANK_NUMBER];
 
+
 tank* createTank(tankType type, unsigned int team, double initX, double initY){
 	tank* ret = nullptr;
 	int i = 0;
@@ -28,7 +29,7 @@ tank* createTank(tankType type, unsigned int team, double initX, double initY){
 			++iterProjOS;
 		}
 		ret->colBox = createCollisionBox(ret);
-		addPowerup(ret, powerupCode::god);
+		//addPowerup(ret, powerupCode::god);
 	}
 	return ret;
 }
@@ -209,6 +210,7 @@ void updatePowerups(){
 	for(int iterTank = 0; iterTank < MAX_TANK_NUMBER; ++iterTank){
 		curTank = tankVector[iterTank];
 
+		if(curTank != NULL)
 		while(iterPower < TIMED_POWERUPS){
 			switch(curTank->powerups[iterPower]){
 				case speed:
