@@ -16,7 +16,6 @@ void Menu::addButton(int x, int y, char path[], char name[16], char job[16], int
 {
 	buttons[buttonNumber].setX(x);
 	buttons[buttonNumber].setY(y);
-	buttons[buttonNumber].setRenderTarget(renderTarget);
 	buttons[buttonNumber].loadTexture(path);
 	buttons[buttonNumber].setName(name);
 	buttons[buttonNumber].setJob(job);

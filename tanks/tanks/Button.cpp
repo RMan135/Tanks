@@ -57,11 +57,6 @@ bool Button::pointIsInside(int pointX, int pointY)
 	return false;
 }
 
-void Button::setRenderTarget(SDL_Renderer *target)
-{
-	texture.setRenderTarget(target);
-}
-
 void Button::loadTexture(char path[], bool resize)
 {
 	texture.loadTexture(path);
@@ -77,7 +72,7 @@ void Button::show()
 	if (visible)
 	{
 		SDL_Rect renderSpace = { x, y, width, height };
-		SDL_RenderCopy(texture.getRenderTarget(), texture.getTexture(), NULL, &renderSpace);
+		SDL_RenderCopy(RENDER_TARGET, texture.getTexture(), NULL, &renderSpace);
 	}
 	else
 		cout << "Trying to show invisible button!" << endl;

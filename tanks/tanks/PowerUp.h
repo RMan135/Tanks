@@ -22,7 +22,7 @@ public:
 	unsigned int rotation;
 	unsigned long long duration, nextAvail, unavail;
 
-	void setPowerUp(double x, double y, powerupCode t, SDL_Renderer *target, unsigned long long d = 5000);
+	void setPowerUp(double x, double y, powerupCode t, unsigned long long d = 5000);
 	collisionBox* getColBox();
 	powerupCode getType();
 	void show();

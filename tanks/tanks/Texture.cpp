@@ -5,7 +5,6 @@ using namespace std;
 Texture::Texture()
 {
 	texture = NULL;
-	renderTarget = NULL;
 	width = 0;
 	height = 0;
 	loaded = false;
@@ -14,7 +13,6 @@ Texture::Texture()
 Texture::~Texture()
 {
 	SDL_free(texture);
-	SDL_free(renderTarget);
 }
 
 int Texture::getWidth()
@@ -27,16 +25,6 @@ int Texture::getHeight()
 	return height;
 }
 
-void Texture::setRenderTarget(SDL_Renderer *newRenderTarget)
-{
-	renderTarget = newRenderTarget;
-}
-
-SDL_Renderer* Texture::getRenderTarget()
-{
-	return renderTarget;
-}
-
 void Texture::loadTexture(char path[])
 {
 	bool success = true;
@@ -46,7 +34,7 @@ void Texture::loadTexture(char path[])
 		cout << "Could not load image from " << path << " ! " << SDL_GetError() << endl;
 		success = false;
 	}
-	texture = SDL_CreateTextureFromSurface(renderTarget, image);
+	texture = SDL_CreateTextureFromSurface(RENDER_TARGET, image);
 	if(texture == NULL)
 	{
 		cout << "Could not convert image from " << path << " ! " << SDL_GetError() << endl;
@@ -75,7 +63,7 @@ void Texture::simpleRender(int x, int y, double scale)
 	else
 	{
 		SDL_Rect renderSpace = { x, y, width*scale, height*scale };
-		SDL_RenderCopy(renderTarget, texture, NULL, &renderSpace);
+		SDL_RenderCopy(RENDER_TARGET, texture, NULL, &renderSpace);
 	}
 }
 
@@ -87,7 +75,7 @@ void Texture::render(int x, int y, double angle, double scale, SDL_Rect* clip, S
 		renderSpace.w = clip->w;
 		renderSpace.h = clip->h;
 	}
-	SDL_RenderCopyEx(renderTarget, texture, clip, &renderSpace, angle, center, flip);
+	SDL_RenderCopyEx(RENDER_TARGET, texture, clip, &renderSpace, angle, center, flip);
 }
 
 void Texture::setColor(Uint8 red, Uint8 green, Uint8 blue)

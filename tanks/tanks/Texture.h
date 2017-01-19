@@ -2,11 +2,13 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+
+extern SDL_Renderer *RENDER_TARGET;
+
 class Texture
 {
 private:
 	SDL_Texture *texture;
-	SDL_Renderer *renderTarget;
 	int width, height;
 
 	bool loaded;
@@ -20,10 +22,6 @@ public:
 	int getWidth();
 
 	int getHeight();
-
-	void setRenderTarget(SDL_Renderer *newRenderTarget);
-
-	SDL_Renderer *getRenderTarget();
 
 	void loadTexture(char path[]);
 

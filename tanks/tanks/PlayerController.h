@@ -88,6 +88,11 @@ struct PlayerController
 		btFire = SDLK_KP_0;
 	}
 
+	void reset()
+	{
+		fwd = bkd = left = right = fire = 0;
+	}
+
 	void addTank(tank *t)
 	{
 		ownedTank = t;

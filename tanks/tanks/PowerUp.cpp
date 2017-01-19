@@ -2,7 +2,7 @@
 
 //PowerUp* powerUpVector[MAX_POWERUP_NUMBER];
 
-void PowerUp::setPowerUp(double x, double y, powerupCode t, SDL_Renderer *target, unsigned long long d)
+void PowerUp::setPowerUp(double x, double y, powerupCode t, unsigned long long d)
 {
 	pos.x.doubleVal = x;
 	pos.y.doubleVal = y;
@@ -13,7 +13,6 @@ void PowerUp::setPowerUp(double x, double y, powerupCode t, SDL_Renderer *target
 	duration = d;
 	dim.x.doubleVal = 1.0;
 	dim.y.doubleVal = 1.0;
-	texture.setRenderTarget(target);
 	switch (type)
 	{
 	case god:

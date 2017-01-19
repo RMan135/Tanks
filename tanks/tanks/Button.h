@@ -1,6 +1,8 @@
 #pragma once
 #include "Texture.h"
 
+extern SDL_Renderer *RENDER_TARGET;
+
 class Button
 {
 private:
@@ -31,9 +33,7 @@ public:
 	void setY(int Y);
 
 	bool pointIsInside(int pointX, int pointY);
-
-	void setRenderTarget(SDL_Renderer *target);
-
+	
 	void loadTexture(char path[], bool resize = 1);
 
 	void show();

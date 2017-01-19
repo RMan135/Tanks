@@ -111,12 +111,9 @@ int main(int argc, char* args[])
 		}
 	}
 
-	currentTileset.loadTileset("forest", RENDER_TARGET);
-	tankTexture.setRenderTarget(RENDER_TARGET);
+	currentTileset.loadTileset("forest");
 	tankTexture.loadTexture("media/tank.png");
-	bullet.setRenderTarget(RENDER_TARGET);
 	bullet.loadTexture("media/bullet.png");
-	teamOverlay.setRenderTarget(RENDER_TARGET);
 	teamOverlay.loadTexture("media/tank_team_overlay.png");
 	
 
@@ -407,16 +404,16 @@ void nextMap()
 	switch (mapTheme)
 	{
 	case 0:
-		currentTileset.loadTileset("forest", RENDER_TARGET);
+		currentTileset.loadTileset("forest");
 		break;
 	case 1:
-		currentTileset.loadTileset("cave", RENDER_TARGET);
+		currentTileset.loadTileset("cave");
 		break;
 	case 2:
-		currentTileset.loadTileset("ruins", RENDER_TARGET);
+		currentTileset.loadTileset("ruins");
 		break;
 	case 3:
-		currentTileset.loadTileset("desert", RENDER_TARGET);
+		currentTileset.loadTileset("desert");
 		break;
 	}
 	if (currentMap > 3)
@@ -429,16 +426,16 @@ void randomMap()
 	switch (mapTheme)
 	{
 	case 0:
-		currentTileset.loadTileset("forest", RENDER_TARGET);
+		currentTileset.loadTileset("forest");
 		break;
 	case 1:
-		currentTileset.loadTileset("cave", RENDER_TARGET);
+		currentTileset.loadTileset("cave");
 		break;
 	case 2:
-		currentTileset.loadTileset("ruins", RENDER_TARGET);
+		currentTileset.loadTileset("ruins");
 		break;
 	case 3:
-		currentTileset.loadTileset("desert", RENDER_TARGET);
+		currentTileset.loadTileset("desert");
 		break;
 	}
 }
@@ -455,6 +452,7 @@ void spawnTanks()
 	{
 		tankVector[i] = createTank(general , i, playerSpawners[i].x.doubleVal - 0.5, playerSpawners[i].y.doubleVal - 0.5);
 		pController[i].addTank(tankVector[i]);
+		pController[i].reset();
 		switch (i)
 		{
 		case 0:
