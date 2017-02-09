@@ -1,6 +1,6 @@
 # Tanks
 
-Controlls:
+Game controls:
 
   Player1
   
